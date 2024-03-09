@@ -15,6 +15,18 @@ export async function createRoom(roomId) {
     return data.roomId;
 }
 
+export async function checkIfRoomExists(roomId) {
+    const response = await fetch(`${ROOM_MANAGER_ENDPOINT}/${roomId}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const data = await response.json();
+    return data.status;
+}
+
 export function deleteRoom(roomId) {
     return fetch(`${ROOM_MANAGER_ENDPOINT}/${roomId}`,{
         method: 'DELETE',
