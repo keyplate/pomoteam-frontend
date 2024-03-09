@@ -1,5 +1,5 @@
 <script>
-    import App from "$lib/App.svelte";
+    import WelcomeDialog from '$lib/welkom-dialog/WelcomeDialog.svelte';
 </script>
 
-<App />
+<WelcomeDialog />

@@ -1,9 +1,9 @@
 const ROOM_MANAGER_ENDPOINT = import.meta.env.VITE_ROOM_MANAGER_ENDPOINT;
 
-export function createRoom(roomId) {
+export async function createRoom(roomId) {
     let body = roomId? {roomId: roomId} : {};
 
-    return fetch(ROOM_MANAGER_ENDPOINT,{
+    const response = await fetch(ROOM_MANAGER_ENDPOINT,{
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -11,8 +11,16 @@ export function createRoom(roomId) {
         },
         body: JSON.stringify(body),
     });
+    const data = await response.json();
+    return data.roomId;
 }
 
 export function deleteRoom(roomId) {
-    //todo
+    return fetch(`${ROOM_MANAGER_ENDPOINT}/${roomId}`,{
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    });
 }
