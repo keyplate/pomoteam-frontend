@@ -1,16 +1,24 @@
 import { Client } from '@stomp/stompjs';
+import { isConnected } from '../stores/Stores.js';
+import { UpdateHandler } from './UpdateHandler.js';
 
-const TOPIC =   import.meta.env.VITE_TOPIC;
+const TOPIC = import.meta.env.VITE_TOPIC;
 
 //todo: consider error handling;
-function buildStompClient(roomId, callback) {
+function openConnection(roomId) {
     const brokerURL = import.meta.env.VITE_MESSAGE_BROKER_ENDPOINT;
+    const updateHandler = new UpdateHandler();
+
     const client =  new Client({
         brokerURL: brokerURL,
         onConnect: () => {
             client.subscribe(`${TOPIC}/${roomId}`, (message) => {
-                callback(message.body);
+                updateHandler.handle(message.body);
             });
+            isConnected.set(true);
+        },
+        onDisconnect: () => {
+            isConnected.set(false);
         },
         debug: (str) => {
             console.log(str);
@@ -20,4 +28,4 @@ function buildStompClient(roomId, callback) {
     return client;
 }
 
-export default buildStompClient;
+export default openConnection;

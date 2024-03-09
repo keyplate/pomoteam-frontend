@@ -1,12 +1,11 @@
 <script>
     import { Button, ButtonGroup, Input, Modal, Span, Tooltip } from 'flowbite-svelte';
     import {roomId, stompMessenger} from '../../stores/Stores.js';
-    import { UpdateHandler } from '../../modules/UpdateHandler.js';
     import { StompMessenger } from '../../modules/StompMessenger.js';
     import { createRoom } from '../../modules/RoomManagement.js';
     import { goto } from '$app/navigation';
-    import buildStompClient from '../../modules/StompClientConfigurer.js';
     import copy from 'copy-to-clipboard';
+    import openConnection from '../../modules/ConnectionManagement.js';
 
 
     let open = true;
@@ -17,14 +16,14 @@
     async function onClickCreateRandom() {
         shouldDisableCreate = true;
         await createSharableLink();
-        initMessengerAndHandler();
+        initConnection();
     }
 
     function onCopyClick() {
         setTimeout(() => {
             copy($roomId);
             open = false;
-            goto(`/timer/${$roomId}`, { replaceState: true} );
+            goto(`/${$roomId}`, { replaceState: true} );
         }, 1000);
     }
 
@@ -32,9 +31,8 @@
         $roomId = await createRoom(customName? customName : '');
     }
 
-    function initMessengerAndHandler() {
-        const messageHandler = new UpdateHandler();
-        const client = buildStompClient($roomId, (message) => {messageHandler.handle(message)});
+    function initConnection() {
+        const client = openConnection($roomId);
         $stompMessenger = new StompMessenger(client, $roomId);
     }
 
