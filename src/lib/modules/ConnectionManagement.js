@@ -1,5 +1,5 @@
 import { Client } from '@stomp/stompjs';
-import { isConnected } from '../stores/Stores.js';
+import { isConnected } from '$lib/stores/Stores.js';
 import { UpdateHandler } from './UpdateHandler.js';
 
 const TOPIC = import.meta.env.VITE_TOPIC;

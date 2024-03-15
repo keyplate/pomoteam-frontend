@@ -23,8 +23,8 @@ export async function checkIfRoomExists(roomId) {
             'Content-Type': 'application/json'
         }
     });
-    const data = await response.json();
-    return data.status;
+    return response.status !== 404;
+
 }
 
 export function deleteRoom(roomId) {

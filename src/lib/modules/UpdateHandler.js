@@ -1,4 +1,4 @@
-import { timerState } from '../stores/Stores.js';
+import { timerState } from '$lib/stores/Stores.js';
 import {updates} from "./models/Updates.js";
 
 export class UpdateHandler {

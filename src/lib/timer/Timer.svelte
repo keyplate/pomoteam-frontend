@@ -1,8 +1,8 @@
 <script>
     import { PauseSolid, PlaySolid } from 'flowbite-svelte-icons';
     import { Button, ButtonGroup } from 'flowbite-svelte';
-    import { stompMessenger, timerState } from '../../stores/Stores.js';
-    import { commands } from '../../modules/models/Commands.js';
+    import { stompMessenger, timerState } from '$lib/stores/Stores.js';
+    import { commands } from '$lib/modules/models/Commands.js';
     import ClockFace from '$lib/timer/ClockFace.svelte';
 
     let isRunning = false;
