@@ -1,9 +1,11 @@
+import { PUBLIC_MESSAGE_ENDPOINT } from '$env/static/public';
+
 export class StompMessenger {
 
     constructor(stompClient, roomId) {
         this.stompClient = stompClient;
         this.roomId = roomId;
-        this.BROKER_ENDPOINT = import.meta.env.VITE_MESSAGE_ENDPOINT;
+        this.BROKER_ENDPOINT = PUBLIC_MESSAGE_ENDPOINT;
     }
 
     send(command, args) {

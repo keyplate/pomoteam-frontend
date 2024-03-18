@@ -1,5 +1,5 @@
 import { timerState } from '$lib/stores/Stores.js';
-import {updates} from "./models/Updates.js";
+import { updates } from './models/Updates.js';
 
 export class UpdateHandler {
 

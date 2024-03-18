@@ -1,9 +1,11 @@
-const ROOM_MANAGER_ENDPOINT = import.meta.env.VITE_ROOM_MANAGER_ENDPOINT;
+import { PUBLIC_ROOM_MANAGER_ENDPOINT } from '$env/static/public';
+
+const ROOM_MANAGER_ENDPOINT = PUBLIC_ROOM_MANAGER_ENDPOINT;
 
 export async function createRoom(roomId) {
-    let body = roomId? {roomId: roomId} : {};
+    let body = roomId ? {roomId: roomId} : {};
 
-    const response = await fetch(ROOM_MANAGER_ENDPOINT,{
+    const response = await fetch(ROOM_MANAGER_ENDPOINT, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -28,7 +30,7 @@ export async function checkIfRoomExists(roomId) {
 }
 
 export function deleteRoom(roomId) {
-    return fetch(`${ROOM_MANAGER_ENDPOINT}/${roomId}`,{
+    return fetch(`${ROOM_MANAGER_ENDPOINT}/${roomId}`, {
         method: 'DELETE',
         mode: 'cors',
         headers: {

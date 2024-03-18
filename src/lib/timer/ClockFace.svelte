@@ -4,7 +4,7 @@
 </script>
 
 <div class='text-8xl m-4 tabular-nums'>
-    {minutes < 10? '0' + minutes : minutes}
+    {minutes < 10 ? '0' + minutes : minutes}
     :
-    {seconds < 10? '0' + seconds : seconds}
+    {seconds < 10 ? '0' + seconds : seconds}
 </div>

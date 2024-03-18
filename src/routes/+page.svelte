@@ -23,12 +23,12 @@
         setTimeout(() => {
             copy($roomId);
             open = false;
-            goto(`/${$roomId}`, { replaceState: true} );
+            goto(`/${$roomId}`, {replaceState: true});
         }, 1000);
     }
 
     async function createSharableLink(customName) {
-        $roomId = await createRoom(customName? customName : '');
+        $roomId = await createRoom(customName ? customName : '');
     }
 
     function initConnection() {
@@ -38,10 +38,10 @@
 
 </script>
 
-<Modal {open} {dismissable}>
+<Modal {dismissable} {open}>
     <Span>Create a sharable link for your pomodoro room</Span>
     <ButtonGroup class='w-full'>
-        <Input value={$roomId} readonly={shouldDisableCreate} />
+        <Input readonly={shouldDisableCreate} value={$roomId}/>
         {#if !shouldDisableCreate}
             <Button>create custom</Button>
             <Button on:click={onClickCreateRandom}>create random</Button>
