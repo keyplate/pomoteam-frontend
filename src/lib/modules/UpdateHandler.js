@@ -8,7 +8,11 @@ export class UpdateHandler {
         switch (message.update) {
             case updates.STARTED:
                 break;
-            case updates.STOPPED:
+            case updates.PAUSED:
+                this.handlePause();
+                break;
+            case updates.DURATION_ADJUSTMENT:
+                this.handleAdjust(message.args);
                 break;
             case updates.TIME_UPDATE:
                 this.handleTimeUpdate(message.args);
@@ -22,6 +26,18 @@ export class UpdateHandler {
         timerState.update(state => {
             Math.round(state.currentTime);
             return {...state, currentTime: currentTime}
+        });
+    }
+
+    handleAdjust(adjustmentDuration) {
+        timerState.update(state => {
+            return {...state, currentTime: state.currentTime + adjustmentDuration}
+        });
+    }
+
+    handlePause() {
+        timerState.update(state => {
+            return {...state, isRunning: false}
         });
     }
 }

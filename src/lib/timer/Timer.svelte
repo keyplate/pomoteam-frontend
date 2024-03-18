@@ -20,11 +20,8 @@
     }
 
     function onAdjustClick(duration) {
-        if (isRunning) {
+        if ($timerState.currentTime + duration > 0) {
             $stompMessenger.send(commands.ADJUST, {adjustmentDuration: duration})
-        } else {
-            const newCurrent = $timerState.currentTime + duration;
-            timerState.update(state => ({...state, currentTime: newCurrent}));
         }
     }
 

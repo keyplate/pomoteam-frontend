@@ -1,5 +1,7 @@
 export const updates = {
     STARTED: 'STARTED',
+    PAUSED: 'PAUSED',
     STOPPED: 'STOPPED',
     TIME_UPDATE: 'TIME_UPDATE',
+    DURATION_ADJUSTMENT: 'DURATION_ADJUSTMENT',
 }
