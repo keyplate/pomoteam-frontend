@@ -4,4 +4,5 @@ export const updates = {
     STOPPED: 'STOPPED',
     TIME_UPDATE: 'TIME_UPDATE',
     DURATION_ADJUSTMENT: 'DURATION_ADJUSTMENT',
+    TIMED_OUT: 'TIMED_OUT',
 }

@@ -4,18 +4,18 @@
     import { stompMessenger, timerState } from '$lib/stores/Stores.js';
     import { commands } from '$lib/modules/models/Commands.js';
     import ClockFace from '$lib/timer/ClockFace.svelte';
+    import { PUBLIC_TIMED_OUT_AUDIO } from '$env/static/public'
 
-    let isRunning = $timerState.isRunning;
+    let audio;
+    const timedOutAudio = PUBLIC_TIMED_OUT_AUDIO;
     $: seconds = Math.round($timerState.currentTime % 60);
     $: minutes = Math.floor($timerState.currentTime / 60);
 
     function onStartClick() {
-        isRunning = true;
         $stompMessenger.send(commands.START, {duration: $timerState.currentTime});
     }
 
     function onPauseClick() {
-        isRunning = false;
         $stompMessenger.send(commands.STOP);
     }
 
@@ -24,6 +24,12 @@
             $stompMessenger.send(commands.ADJUST, {adjustmentDuration: duration})
         }
     }
+
+    function playTimedOutNotification() {
+        audio.play();
+    }
+
+    $: if($timerState.currentTime === 0) playTimedOutNotification();
 
 </script>
 
@@ -45,4 +51,5 @@
             <PauseSolid></PauseSolid>
         </Button>
     </ButtonGroup>
+    <audio src={timedOutAudio} bind:this={audio} hidden></audio>
 </div>

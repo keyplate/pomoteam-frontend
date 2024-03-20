@@ -7,18 +7,16 @@ export class UpdateHandler {
         message = JSON.parse(message);
         switch (message.update) {
             case updates.STARTED:
-                break;
-            case updates.PAUSED:
-                this.handlePause();
-                break;
-            case updates.DURATION_ADJUSTMENT:
-                this.handleAdjust(message.args);
-                break;
-            case updates.TIME_UPDATE:
-                this.handleTimeUpdate(message.args);
-                break;
-            default:
-                console.log(message)
+            break;
+            case updates.PAUSED: this.handlePause();
+            break;
+            case updates.DURATION_ADJUSTMENT: this.handleAdjust(message.args);
+            break;
+            case updates.TIME_UPDATE: this.handleTimeUpdate(message.args);
+            break;
+            case updates.TIMED_OUT: this.handleTimedOut();
+            break;
+            default: console.log(message)
         }
     }
 
@@ -39,5 +37,12 @@ export class UpdateHandler {
         timerState.update(state => {
             return {...state, isRunning: false}
         });
+    }
+
+    handleTimedOut() {
+        timerState.update(state => {
+            return {...state, currentTime: state.focusDuration, isRunning: false}
+        });
+        dispatch(updates.TIMED_OUT);
     }
 }
