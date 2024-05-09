@@ -1,4 +1,4 @@
-import { timerState } from '$lib/stores/Stores.js';
+import { isConnected, timerState } from '$lib/stores/Stores.js';
 import { updates } from './models/Updates.js';
 
 export class UpdateHandler {
@@ -6,7 +6,7 @@ export class UpdateHandler {
     handle(message) {
         message = JSON.parse(message);
         switch (message.update) {
-            case updates.STARTED:
+            case updates.STARTED: this.handleStart();
             break;
             case updates.PAUSED: this.handlePause();
             break;
@@ -16,33 +16,43 @@ export class UpdateHandler {
             break;
             case updates.TIMED_OUT: this.handleTimedOut();
             break;
+            case updates.ROOM_CLOSED: this.handleRoomClose();
+            break;
             default: console.log(message)
         }
     }
 
+    handleStart() {
+        timerState.update(state => ({...state, isRunning: true}));
+    }
+
     handleTimeUpdate(currentTime) {
-        timerState.update(state => {
-            Math.round(state.currentTime);
-            return {...state, currentTime: currentTime}
-        });
+        timerState.update(state => (
+             { ...state, isRunning: true, currentTime: Math.round(currentTime) }
+        ));
     }
 
     handleAdjust(adjustmentDuration) {
         timerState.update(state => {
-            return {...state, currentTime: state.currentTime + adjustmentDuration}
+            if (!state.isRunning) {
+                return {...state, currentTime: state.currentTime + adjustmentDuration}
+            }
+            return {...state};
         });
     }
 
     handlePause() {
-        timerState.update(state => {
-            return {...state, isRunning: false}
-        });
+        timerState.update(state => ({ ...state, isRunning: false }
+        ));
     }
 
     handleTimedOut() {
-        timerState.update(state => {
-            return {...state, currentTime: state.focusDuration, isRunning: false}
-        });
-        dispatch(updates.TIMED_OUT);
+        timerState.update(state => (
+            { ...state, currentTime: state.focusDuration, isRunning: false }
+        ));
+    }
+
+    handleRoomClose() {
+        isConnected.set(false);
     }
 }
