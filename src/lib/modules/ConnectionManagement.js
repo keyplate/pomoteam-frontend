@@ -1,13 +1,13 @@
 import { Client } from '@stomp/stompjs';
 import { isConnected } from '$lib/stores/Stores.js';
 import { UpdateHandler } from './UpdateHandler.js';
-import { PUBLIC_MESSAGE_BROKER_ENDPOINT, PUBLIC_TOPIC } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
-const TOPIC = PUBLIC_TOPIC;
+const TOPIC = env.PUBLIC_TOPIC;
 
 //todo: consider error handling;
 function openConnection(roomId) {
-    const brokerURL = PUBLIC_MESSAGE_BROKER_ENDPOINT;
+    const brokerURL = env.PUBLIC_MESSAGE_BROKER_ENDPOINT;
     const updateHandler = new UpdateHandler();
 
     const client = new Client({

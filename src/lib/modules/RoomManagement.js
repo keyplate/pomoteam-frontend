@@ -1,18 +1,19 @@
-import { PUBLIC_ROOM_MANAGER_ENDPOINT } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
-const ROOM_MANAGER_ENDPOINT = PUBLIC_ROOM_MANAGER_ENDPOINT;
+const ROOM_MANAGER_ENDPOINT = env.PUBLIC_ROOM_MANAGER_ENDPOINT;
 
 export async function createRoom(roomId) {
-    let body = roomId ? {roomId: roomId} : {};
-
+    let body = roomId ? { roomId: roomId } : {};
+    console.log(ROOM_MANAGER_ENDPOINT);
     const response = await fetch(ROOM_MANAGER_ENDPOINT, {
         method: 'POST',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(body)
     });
+
     const data = await response.json();
     return data.roomId;
 }
@@ -35,6 +36,6 @@ export function deleteRoom(roomId) {
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json'
-        },
+        }
     });
 }
