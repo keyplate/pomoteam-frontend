@@ -1,8 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const roomId = writable('');
-
-export const isConnected = writable(false);
+export const hubId = writable('');
 
 export const timerState = writable(
     {
@@ -15,4 +13,4 @@ export const timerState = writable(
     }
 );
 
-export const stompMessenger = writable();
+export const connection = writable();

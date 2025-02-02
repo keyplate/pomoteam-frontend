@@ -1,5 +1,5 @@
 import { isConnected, timerState } from '$lib/stores/Stores.js';
-import { updates } from './models/Updates.js';
+import { updates } from '$lib/modules/hub/models/Updates.js';
 
 export class UpdateHandler {
 
@@ -10,11 +10,11 @@ export class UpdateHandler {
             break;
             case updates.PAUSED: this.handlePause();
             break;
-            case updates.DURATION_ADJUSTMENT: this.handleAdjust(message.args);
+            case updates.DURATION_ADJUSTED: this.handleAdjust(message.args);
             break;
-            case updates.TIME_UPDATE: this.handleTimeUpdate(message.args);
+            case updates.CURRENT_TIME: this.handleTimeUpdate(message.args);
             break;
-            case updates.TIMED_OUT: this.handleTimedOut();
+            case updates.TIME_OUT: this.handleTimedOut();
             break;
             case updates.ROOM_CLOSED: this.handleRoomClose();
             break;

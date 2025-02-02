@@ -1,36 +1,23 @@
 <script>
     import { Tooltip } from 'flowbite-svelte';
-    import { roomId, stompMessenger } from '$lib/stores/Stores.js';
-    import { StompMessenger } from '$lib/modules/StompMessenger.js';
-    import { createRoom } from '$lib/modules/RoomManagement.js';
+    import { createHub } from '$lib/modules/hub/Hub.js';
     import { goto } from '$app/navigation';
     import copy from 'copy-to-clipboard';
-    import openConnection from '$lib/modules/ConnectionManagement.js';
+    import { hubId } from '$lib/stores/Stores.js';
     import { ArrowRightOutline } from 'flowbite-svelte-icons';
 
+    let disableCreate = $state(false);
 
-    let shouldDisableCreate = $state(false);
-
-    async function onClickCreateRandom() {
-        shouldDisableCreate = true;
-        await createSharableLink();
-        initConnection();
+    async function onCreateClick() {
+        disableCreate = true;
+        $hubId = await createHub('');
     }
 
     function onCopyClick() {
         setTimeout(() => {
-            copy($roomId);
-            goto(`/${$roomId}`, { replaceState: true });
+            copy($hubId);
+            goto(`/${$hubId}`, { replaceState: true });
         }, 1000);
-    }
-
-    async function createSharableLink(customName) {
-        $roomId = await createRoom(customName ? customName : '');
-    }
-
-    function initConnection() {
-        const client = openConnection($roomId);
-        $stompMessenger = new StompMessenger(client, $roomId);
     }
 
 </script>
@@ -41,15 +28,15 @@
             <p class='text-1xl font-bold mb-5 ml-4'>It's dedicated to help you work within pomodoro framework with a
                 team.</p>
             <div class='flex flex-row items-center mb-3'>
-                <pre class='text-1xl font-bold mx-7 font-sans'>To start  <button onclick={onClickCreateRandom}
+                <pre class='text-1xl font-bold mx-7 font-sans'>To start  <button onclick={onCreateClick}
                                                                                  class='bg-green-700 px-2 py-1 rounded-md text-gray-300 border-2 border-green-800 hover:border-amber-200'>generate a link</button>  and share it with you peers</pre>
             </div>
-            {#if shouldDisableCreate}
+            {#if disableCreate}
                 <div class='w-full ml-10 flex flex-row'>
                     <div class='flex flex-row items-center'>
                         <ArrowRightOutline />
                         <div
-                            class='border-0 underline underline-offset-8 shadow-sm text-center py-1 px-2'>{$roomId}</div>
+                            class='border-0 underline underline-offset-8 shadow-sm text-center py-1 px-2'>{$hubId}</div>
                     </div>
                     <button id='copy-button' onclick={onCopyClick}
                             class='bg-green-700 px-2 py-1 ml-2 rounded-md text-gray-300 font-bold border-2 border-green-800 hover:border-amber-200'>

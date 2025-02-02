@@ -1,43 +1,41 @@
 <script>
-    import { run } from 'svelte/legacy';
-
     import { PauseSolid, PlaySolid } from 'flowbite-svelte-icons';
-    import { stompMessenger, timerState } from '$lib/stores/Stores.js';
-    import { commands } from '$lib/modules/models/Commands.js';
+    import { connection, timerState } from '$lib/stores/Stores.js';
+    import { commands } from '$lib/modules/hub/models/Commands.js';
     import ClockFace from '$lib/timer/ClockFace.svelte';
     import { env } from '$env/dynamic/public';
 
     let audio = $state();
-    const timedOutAudio = env.PUBLIC_TIMED_OUT_AUDIO;
-    let buttonClass = ' shadow-md px-6 py-5 ml-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50';
-    let activeButtonClass = ' bg-emerald-100 hover:border-amber-200 transition active:translate-y-1 ';
     let seconds = $derived(Math.round($timerState.currentTime % 60));
     let minutes = $derived(Math.floor($timerState.currentTime / 60));
 
+    const buttonClass = ' shadow-md px-6 py-5 ml-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50';
+    const activeButtonClass = ' bg-emerald-100 hover:border-amber-200 transition active:translate-y-1 ';
+
     function onStartClick() {
-        $stompMessenger.send(commands.START, { duration: $timerState.currentTime });
+        $connection.send({ name: commands.START, arg: $timerState.currentTime });
     }
 
     function onPauseClick() {
-        $stompMessenger.send(commands.STOP);
+        $connection.send(commands.STOP);
     }
 
+    /**
+     * @param {number} duration
+     */
     function onAdjustClick(duration) {
         if ($timerState.currentTime + duration > 0) {
-            $stompMessenger.send(commands.ADJUST, { adjustmentDuration: duration });
+            $connection.send(commands.ADJUST, { adjustmentDuration: duration });
         } else {
-            $stompMessenger.send(commands.RESTART, null);
+            $connection.send(commands.RESTART, null);
         }
     }
 
-    function playTimedOutNotification() {
-        audio.play();
-    }
-
-    run(() => {
-        if ($timerState.currentTime === 0) playTimedOutNotification();
-    });
-
+    $effect(() => {
+        if ($timerState.currentTime === 0) {
+            audio.play();
+        }
+    })
 </script>
 
 <div class='flex flex-col items-center h-full'>
@@ -62,5 +60,5 @@
                 onclick={()=>onAdjustClick(-300)}>-5
         </button>
     </div>
-    <audio src={timedOutAudio} bind:this={audio} hidden></audio>
+    <audio src={env.PUBLIC_TIMED_OUT_AUDIO} bind:this={audio} hidden></audio>
 </div>
