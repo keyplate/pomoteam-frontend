@@ -1,4 +1,3 @@
-import { isConnected, timerState } from '$lib/stores/Stores.js';
 import { updates } from '$lib/modules/hub/models/Updates.js';
 
 export class UpdateHandler {

@@ -6,29 +6,47 @@
     import { AdjustmentsHorizontalSolid, ShareAllSolid } from 'flowbite-svelte-icons';
     import { goto } from '$app/navigation';
 
-    const buttonClass = 'shadow-md px-6 py-5 ml-2 mt-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50 bg-emerald-100 hover:border-amber-200 transition active:translate-y-1';
+    let { data } = $props()
+    const BUTTON_CLASS = 'shadow-md px-6 py-5 ml-2 mt-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50 bg-emerald-100 hover:border-amber-200 transition active:translate-y-1';
 
     onMount(() => {
-        if ($hubId === null) {
-            goto('/', {replaceState: true}); //Not good, but let's stick with this for testing
-        }
-        $connection = openConnection($hubId);
-    });
 
+        if ($hubId === null || $hubId === '') {
+            if (data.hubId === undefined || data.hubId === null) {
+                goto('/', { replaceState: true });
+                return;
+            }
+            $hubId = data.hubId;
+        }
+
+        try {
+            $connection = openConnection($hubId);
+        } catch (error) {
+            console.error('Failed to establish connection:', error);
+        }
+
+        return () => {
+            if (!$connection) {
+                return;
+            }
+            $connection.disconnect()
+        };
+    });
 </script>
 
-<style lang='postcss'></style>
-
-<div class='flex flex-col h-screen'>
-    <header class='bg-green-500 h-16 flex flex-col items-start'>
-        <button class={buttonClass}>
-            <ShareAllSolid/>
+<div class='flex flex-col min-h-screen'>
+    <header class='bg-green-500 p-4 flex flex-row items-center gap-2'>
+        <button class={BUTTON_CLASS}
+                title="Share">
+            <ShareAllSolid />
         </button>
-        <button class={buttonClass}>
-            <AdjustmentsHorizontalSolid/>
+        <button class={BUTTON_CLASS}
+                title="Settings">
+            <AdjustmentsHorizontalSolid />
         </button>
     </header>
-    <div class='mt-16 flex-grow'>
-        <Timer></Timer>
-    </div>
+
+    <main class='flex-grow flex items-center justify-center'>
+        <Timer />
+    </main>
 </div>

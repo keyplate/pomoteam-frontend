@@ -48,7 +48,6 @@ class WebSocketConnection {
         console.log('WebSocket connected');
         clearTimeout(this.timeoutId);
         this.reconnectAttempts = 0;
-        isConnected.set(true);
     }
 
     handleMessage(event) {
@@ -65,7 +64,6 @@ class WebSocketConnection {
     }
 
     handleClose(event) {
-        isConnected.set(false);
         clearTimeout(this.timeoutId);
 
         const normalClosure = event.code === 1000;
@@ -82,7 +80,6 @@ class WebSocketConnection {
 
     handleError(error) {
         console.error('WebSocket error:', error);
-        isConnected.set(false);
     }
 
     shouldReconnect() {

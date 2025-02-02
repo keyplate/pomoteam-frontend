@@ -5,15 +5,25 @@
     import ClockFace from '$lib/timer/ClockFace.svelte';
     import { env } from '$env/dynamic/public';
 
+    const FIVE_MINUTES = 300;
+    const BUTTON_CLASSES = {
+        base: 'shadow-md px-6 py-5 ml-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50',
+        active: 'bg-emerald-100 hover:border-amber-200 transition active:translate-y-1',
+        running: 'transition-colors duration-500 bg-emerald-400',
+        stopped: 'transition-colors duration-500 bg-red-400'
+    };
+
     let audio = $state();
     let seconds = $derived(Math.round($timerState.currentTime % 60));
     let minutes = $derived(Math.floor($timerState.currentTime / 60));
 
-    const buttonClass = ' shadow-md px-6 py-5 ml-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50';
-    const activeButtonClass = ' bg-emerald-100 hover:border-amber-200 transition active:translate-y-1 ';
+    function getButtonClasses(isControlButton = false, isRunning = false) {
+        if (!isControlButton) return `${BUTTON_CLASSES.base} ${BUTTON_CLASSES.active}`;
+        return `${BUTTON_CLASSES.base} ${isRunning ? BUTTON_CLASSES.running : BUTTON_CLASSES.stopped}`;
+    }
 
     function onStartClick() {
-        $connection.send({ name: commands.START, arg: $timerState.currentTime });
+        $connection.send({name: commands.START, arg: $timerState.currentTime});
     }
 
     function onPauseClick() {
@@ -24,41 +34,44 @@
      * @param {number} duration
      */
     function onAdjustClick(duration) {
-        if ($timerState.currentTime + duration > 0) {
-            $connection.send(commands.ADJUST, { adjustmentDuration: duration });
-        } else {
-            $connection.send(commands.RESTART, null);
-        }
+        const command = $timerState.currentTime + duration > 0 ? commands.ADJUST : commands.RESTART;
+        const arg = command === commands.ADJUST ? {adjustmentDuration: duration} : null;
+        $connection.send(command, arg);
     }
 
     $effect(() => {
         if ($timerState.currentTime === 0) {
-            audio.play();
+            audio?.play().catch(error => console.warn('Audio playback failed:', error));
         }
-    })
+    });
 </script>
 
 <div class='flex flex-col items-center h-full'>
     <div class='flex flex-row items-center'>
-        <ClockFace {minutes} {seconds}></ClockFace>
+        <ClockFace {minutes} {seconds}/>
     </div>
+
     <div class='inline-flex'>
-        <button class='{buttonClass + activeButtonClass}'
-                onclick={()=>onAdjustClick(300)}>+5
+        <button class={getButtonClasses()}
+                onclick={() => onAdjustClick(FIVE_MINUTES)}>
+            +5
         </button>
-        <button
-            class='{buttonClass + (!$timerState.isRunning? activeButtonClass : "transition-colors duration-500 bg-emerald-400")} '
-            onclick={onStartClick}>
-            <PlaySolid></PlaySolid>
+
+        <button class={getButtonClasses(true, !$timerState.isRunning)}
+                onclick={onStartClick}>
+            <PlaySolid/>
         </button>
-        <button
-            class='{buttonClass  + ($timerState.isRunning? activeButtonClass : "transition-colors duration-500 bg-red-400")} '
-            onclick={onPauseClick}>
-            <PauseSolid></PauseSolid>
+
+        <button class={getButtonClasses(true, $timerState.isRunning)} onclick={onPauseClick}>
+            <PauseSolid/>
         </button>
-        <button class='{buttonClass + activeButtonClass}'
-                onclick={()=>onAdjustClick(-300)}>-5
+
+        <button class={getButtonClasses()} onclick={() => onAdjustClick(-FIVE_MINUTES)}>
+            -5
         </button>
     </div>
-    <audio src={env.PUBLIC_TIMED_OUT_AUDIO} bind:this={audio} hidden></audio>
+
+    <audio src={env.PUBLIC_TIMED_OUT_AUDIO}
+            bind:this={audio}
+            hidden></audio>
 </div>
