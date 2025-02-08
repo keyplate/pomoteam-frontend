@@ -4,7 +4,7 @@ export const hubId = writable('');
 
 export const timerState = writable(
     {
-        currentTime: 10,
+        timeLeft: 10,
         session: 'focus',
         isRunning: false,
         focusDuration: 1500,

@@ -11,7 +11,7 @@ export class UpdateHandler {
             break;
             case updates.DURATION_ADJUSTED: this.handleAdjust(update.arg);
             break;
-            case updates.CURRENT_TIME: this.handleTimeUpdate(update.arg);
+            case updates.TIME_LEFT: this.handleTimeUpdate(Number.parseInt(update.arg));
             break;
             case updates.TIME_OUT: this.handleTimedOut();
             break;
@@ -25,19 +25,14 @@ export class UpdateHandler {
         timerState.update(state => ({...state, isRunning: true}));
     }
 
-    handleTimeUpdate(currentTime) {
+    handleTimeUpdate(timeLeft) {
         timerState.update(state => (
-             { ...state, isRunning: true, currentTime: Math.round(currentTime) }
+             { ...state, isRunning: true, timeLeft: Math.round(timeLeft) }
         ));
     }
 
     handleAdjust(adjustmentDuration) {
-        timerState.update(state => {
-            if (!state.isRunning) {
-                return {...state, currentTime: state.currentTime + adjustmentDuration}
-            }
-            return {...state};
-        });
+        //stub
     }
 
     handlePause() {

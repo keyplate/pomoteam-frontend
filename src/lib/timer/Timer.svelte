@@ -14,8 +14,8 @@
     };
 
     let audio = $state();
-    let seconds = $derived(Math.round($timerState.currentTime % 60));
-    let minutes = $derived(Math.floor($timerState.currentTime / 60));
+    let seconds = $derived(Math.round($timerState.timeLeft % 60));
+    let minutes = $derived(Math.floor($timerState.timeLeft / 60));
 
     function getButtonClasses(isControlButton = false, isRunning = false) {
         if (!isControlButton) return `${BUTTON_CLASSES.base} ${BUTTON_CLASSES.active}`;
@@ -23,24 +23,24 @@
     }
 
     function onStartClick() {
-        $connection.send({name: commands.START, arg: $timerState.currentTime.toString()});
+        $connection.send({name: commands.START, arg: $timerState.timeLeft.toString()});
     }
 
     function onPauseClick() {
-        $connection.send(commands.STOP);
+        $connection.send({name: commands.STOP});
     }
 
     /**
      * @param {number} duration
      */
     function onAdjustClick(duration) {
-        const command = $timerState.currentTime + duration > 0 ? commands.ADJUST : commands.RESTART;
+        const command = $timerState.timeLeft + duration > 0 ? commands.ADJUST : commands.RESTART;
         const arg = command === commands.ADJUST ? {adjustmentDuration: duration} : null;
         $connection.send(command, arg);
     }
 
     $effect(() => {
-        if ($timerState.currentTime === 0) {
+        if ($timerState.timeLeft === 0) {
             audio?.play().catch(error => console.warn('Audio playback failed:', error));
         }
     });
