@@ -1,23 +1,23 @@
 import { updates } from '$lib/modules/hub/models/Updates.js';
+import { timerState } from '$lib/stores/Stores.js';
 
 export class UpdateHandler {
 
-    handle(message) {
-        message = JSON.parse(message);
-        switch (message.update) {
+    handle(update) {
+        switch (update.name) {
             case updates.STARTED: this.handleStart();
             break;
             case updates.PAUSED: this.handlePause();
             break;
-            case updates.DURATION_ADJUSTED: this.handleAdjust(message.args);
+            case updates.DURATION_ADJUSTED: this.handleAdjust(update.arg);
             break;
-            case updates.CURRENT_TIME: this.handleTimeUpdate(message.args);
+            case updates.CURRENT_TIME: this.handleTimeUpdate(update.arg);
             break;
             case updates.TIME_OUT: this.handleTimedOut();
             break;
-            case updates.ROOM_CLOSED: this.handleRoomClose();
+            case updates.CLOSED: this.handleRoomClose();
             break;
-            default: console.log(message)
+            default: console.log(update)
         }
     }
 
@@ -52,6 +52,6 @@ export class UpdateHandler {
     }
 
     handleRoomClose() {
-        isConnected.set(false);
+        //stub
     }
 }

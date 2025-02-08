@@ -52,11 +52,11 @@ class WebSocketConnection {
 
     handleMessage(event) {
         try {
-            const message = JSON.parse(event.data);
-            if (message && message.command) {
-                this.updateHandler.handle(message);
+            const update = JSON.parse(event.data);
+            if (update && update.name) {
+                this.updateHandler.handle(update);
             } else {
-                console.warn('Received message in unexpected format:', message);
+                console.warn('Received message in unexpected format:', update);
             }
         } catch (error) {
             console.error('Error processing message:', error);

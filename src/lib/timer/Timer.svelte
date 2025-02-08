@@ -23,7 +23,7 @@
     }
 
     function onStartClick() {
-        $connection.send({name: commands.START, arg: $timerState.currentTime});
+        $connection.send({name: commands.START, arg: $timerState.currentTime.toString()});
     }
 
     function onPauseClick() {
