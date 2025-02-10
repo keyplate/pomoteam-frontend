@@ -54,5 +54,5 @@ export class UpdateHandler {
         ));
     }
 
-    handleRoomClose() {//stub}
+    handleRoomClose() {/**stub**/}
 }
