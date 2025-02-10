@@ -34,9 +34,7 @@
      * @param {number} duration
      */
     function onAdjustClick(duration) {
-        const command = $timerState.timeLeft + duration > 0 ? commands.ADJUST : commands.RESTART;
-        const arg = command === commands.ADJUST ? {adjustmentDuration: duration} : null;
-        $connection.send(command, arg);
+        $connection.send({name: commands.ADJUST, arg: duration.toString()});
     }
 
     $effect(() => {
