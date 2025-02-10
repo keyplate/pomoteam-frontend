@@ -2,59 +2,50 @@ import { updates } from '$lib/modules/hub/models/Updates.js';
 import { timerState } from '$lib/stores/Stores.js';
 
 export class UpdateHandler {
+
+    handlers = new Map();
+
+    constructor() {
+        this.handlers.set(updates.STARTED, this.handleStart);
+        this.handlers.set(updates.PAUSED, this.handlePause);
+        this.handlers.set(updates.DURATION_ADJUSTED, this.handleAdjust);
+        this.handlers.set(updates.TIME_LEFT, this.handleTimeUpdate);
+        this.handlers.set(updates.TIME_OUT, this.handleTimedOut);
+        this.handlers.set(updates.CLOSED, this.handleRoomClose);
+    }
+
     handle(update) {
-        switch (update.name) {
-            case updates.STARTED:
-                this.handleStart();
-                break;
-            case updates.PAUSED:
-                this.handlePause();
-                break;
-            case updates.DURATION_ADJUSTED:
-                this.handleAdjust(Number.parseInt(update.arg));
-                break;
-            case updates.TIME_LEFT:
-                this.handleTimeUpdate(Number.parseInt(update.arg));
-                break;
-            case updates.TIME_OUT:
-                this.handleTimedOut();
-                break;
-            case updates.CLOSED:
-                this.handleRoomClose();
-                break;
-            default:
-                console.log(update)
+        const handler = this.handlers.get(update.name);
+
+        if (!handler) {
+            return;
         }
+        handler(update);
     }
 
     handleStart() {
         timerState.update(state => ({...state, isRunning: true}));
     }
 
-    /**
-     * @param {number} timeLeft
-     */
-    handleTimeUpdate(timeLeft) {
+    handleTimeUpdate(update) {
+        const timeLeft = Number.parseInt(update.timeLeft);
         timerState.update(state => (
             {...state, isRunning: true, timeLeft: Math.round(timeLeft)}
         ));
     }
 
-    /**
-     * @param {number} adjustmentDuration
-     */
-    handleAdjust(adjustmentDuration) {
+    handleAdjust(update) {
+        const timeLeft = Number.parseInt(update.timeLeft);
         timerState.update(state => {
             if (state.isRunning) {
                 return state;
             }
-            return {...state, timeLeft: state.timeLeft + adjustmentDuration};
+            return {...state, timeLeft: timeLeft};
         })
     }
 
     handlePause() {
-        timerState.update(state => ({...state, isRunning: false}
-        ));
+        timerState.update(state => ({...state, isRunning: false}));
     }
 
     handleTimedOut() {
@@ -63,7 +54,5 @@ export class UpdateHandler {
         ));
     }
 
-    handleRoomClose() {
-        //stub
-    }
+    handleRoomClose() {//stub}
 }
