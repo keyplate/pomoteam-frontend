@@ -14,8 +14,6 @@
     };
 
     let audio = $state();
-    let seconds = $derived(Math.round($timerState.timeLeft % 60));
-    let minutes = $derived(Math.floor($timerState.timeLeft / 60));
 
     function getButtonClasses(isControlButton = false, isRunning = false) {
         if (!isControlButton) return `${BUTTON_CLASSES.base} ${BUTTON_CLASSES.active}`;
@@ -34,10 +32,13 @@
      * @param {number} duration
      */
     function onAdjustClick(duration) {
-        $connection.send({name: commands.ADJUST, arg: duration.toString()});
+        $connection.send({name: commands.ADJUST, args: duration.toString()});
     }
 
     $effect(() => {
+        if (!$timerState.isRunning) {
+            return;
+        }
         if ($timerState.timeLeft === 0) {
             audio?.play().catch(error => console.warn('Audio playback failed:', error));
         }
@@ -46,7 +47,7 @@
 
 <div class='flex flex-col items-center h-full'>
     <div class='flex flex-row items-center'>
-        <ClockFace {minutes} {seconds}/>
+        <ClockFace />
     </div>
 
     <div class='inline-flex'>
