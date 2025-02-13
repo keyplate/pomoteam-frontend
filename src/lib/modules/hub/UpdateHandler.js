@@ -8,7 +8,7 @@ export class UpdateHandler {
     constructor() {
         this.handlers.set(updates.STATE, this.handleState)
         this.handlers.set(updates.STARTED, this.handleStart);
-        this.handlers.set(updates.SESSION_UPDATE, this.handleSessionUpdate),
+        this.handlers.set(updates.SESSION_UPDATE, this.handleSessionUpdate);
         this.handlers.set(updates.PAUSED, this.handlePause);
         this.handlers.set(updates.DURATION_ADJUSTED, this.handleAdjust);
         this.handlers.set(updates.TIME_UPDATE, this.handleTimeUpdate);

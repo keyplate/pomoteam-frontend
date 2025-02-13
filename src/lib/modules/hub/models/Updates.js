@@ -7,4 +7,5 @@ export const updates = {
     TIME_OUT: 'TIME_OUT',
     CLOSED: 'ROOM_CLOSED',
     STATE: 'STATE',
+    SESSION_UPDATE: 'SESSION_UPDATE',
 }

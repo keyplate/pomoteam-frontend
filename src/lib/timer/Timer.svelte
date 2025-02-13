@@ -25,7 +25,7 @@
     }
 
     function onPauseClick() {
-        $connection.send({name: commands.STOP});
+        $connection.send({name: commands.PAUSE});
     }
 
     /**
