@@ -12,3 +12,5 @@ export const timerState = writable({
 });
 
 export const connection = writable();
+
+export const isHubClosed = writable(false);

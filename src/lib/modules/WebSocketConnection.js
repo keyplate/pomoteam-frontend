@@ -1,5 +1,6 @@
 import { UpdateHandler } from './hub/UpdateHandler.js';
 import { env } from '$env/dynamic/public';
+import { isHubClosed } from '$lib/stores/Stores.js';
 
 class WebSocketConnection {
     constructor(hubId) {
@@ -36,6 +37,7 @@ class WebSocketConnection {
             this.ws.onmessage = this.handleMessage.bind(this);
             this.ws.onclose = this.handleClose.bind(this);
             this.ws.onerror = this.handleError.bind(this);
+            isHubClosed.set(false);
 
             return this;
         } catch (error) {
@@ -75,6 +77,9 @@ class WebSocketConnection {
 
         if (!normalClosure && this.shouldReconnect()) {
             this.attemptReconnect();
+        }
+        if (!this.shouldReconnect()) {
+            isHubClosed.set(true);
         }
     }
 

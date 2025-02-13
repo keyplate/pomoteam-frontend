@@ -1,8 +1,6 @@
 /** @type {import('./$types').PageLoad} */
-export function load({ url }) {
-    const UUID_LENGTH = 36
-    const hubId = url.href.slice(-UUID_LENGTH)
+export function load({ params }) {
     return {
-        hubId: hubId
+        hubId: params.id
     };
 }

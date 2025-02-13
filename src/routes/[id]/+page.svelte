@@ -1,7 +1,7 @@
 <script>
     import Timer from '$lib/timer/Timer.svelte';
     import { onMount } from 'svelte';
-    import { connection, hubId } from '$lib/stores/Stores.js';
+    import { connection, hubId, isHubClosed } from '$lib/stores/Stores.js';
     import openConnection from '$lib/modules/WebSocketConnection.js';
     import { AdjustmentsHorizontalSolid, ShareAllSolid } from 'flowbite-svelte-icons';
     import { goto } from '$app/navigation';
@@ -31,6 +31,12 @@
             $connection.disconnect()
         };
     });
+
+    $effect(() => {
+        if ($isHubClosed) {
+            goto('/', { replaceState: true });
+        }
+    })
 </script>
 
 <div class='flex flex-col min-h-screen'>
