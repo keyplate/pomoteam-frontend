@@ -48,9 +48,10 @@ export class UpdateHandler {
     handleStart = (update) => {
         const isSessionEnded = this.parseBool(update.args.isSessionEnded);
         const isRunning = this.parseBool(update.args.isRunning);
+        const timeLeft = Number.parseInt(update.args.timeLeft);
 
         timerState.update(state => ({
-            ...state, isRunning: isRunning, isSessionEnded: isSessionEnded,
+            ...state, isRunning: isRunning, isSessionEnded: isSessionEnded, timeLeft: timeLeft
         }));
     }
 
