@@ -37,7 +37,7 @@ export async function createHub(hubId) {
     return data.id;
 }
 
-export async function checkIfRoomExists(hubId) {
+export async function checkHubExists(hubId, fetch) {
     if (!hubId) {
         throw new HubOperationError(
             ERROR_MESSAGES[ERROR_TYPES.INVALID_HUB_ID],
@@ -53,17 +53,8 @@ export async function checkIfRoomExists(hubId) {
             }
         });
 
-        switch (response.status) {
-            case 200:
-                return true;
-            case 404:
-                return false;
-            default:
-                throw new HubOperationError(
-                    ERROR_MESSAGES[ERROR_TYPES.SERVER],
-                    ERROR_TYPES.SERVER
-                );
-        }
+        return response.status === 200;
+
     } catch (error) {
         if (error instanceof HubOperationError) {
             throw error;
