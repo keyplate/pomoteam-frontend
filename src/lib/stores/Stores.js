@@ -11,6 +11,8 @@ export const timerState = writable({
     breakDuration: 300,
 });
 
+export const shouldPlayAudio = writable(false);
+
 export const connection = writable();
 
 export const isHubClosed = writable(false);

@@ -1,6 +1,6 @@
 <script>
     import { PauseSolid, PlaySolid } from 'flowbite-svelte-icons';
-    import { connection, timerState } from '$lib/stores/Stores.js';
+    import { connection, shouldPlayAudio, timerState } from '$lib/stores/Stores.js';
     import { commands } from '$lib/modules/hub/models/Commands.js';
     import ClockFace from '$lib/timer/ClockFace.svelte';
     import { env } from '$env/dynamic/public';
@@ -40,12 +40,11 @@
     }
 
     $effect(() => {
-        if (!$timerState.isRunning) {
+        if (!$shouldPlayAudio) {
             return;
         }
-        if ($timerState.timeLeft === 0) {
-            audio?.play().catch(error => console.warn('Audio playback failed:', error));
-        }
+        audio?.play().catch(error => console.warn('Audio playback failed:', error));
+        $shouldPlayAudio = false;
     });
 </script>
 

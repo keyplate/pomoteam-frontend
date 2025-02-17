@@ -1,5 +1,5 @@
 import { updates } from '$lib/modules/hub/models/Updates.js';
-import { isHubClosed, timerState } from '$lib/stores/Stores.js';
+import { isHubClosed, shouldPlayAudio, timerState } from '$lib/stores/Stores.js';
 
 export class UpdateHandler {
     handlers = new Map();
@@ -100,6 +100,7 @@ export class UpdateHandler {
         timerState.update(state => ({
             ...state, isRunning: isRunning, isSessionEnded: isSessionEnded,
         }));
+        shouldPlayAudio.set(true);
     }
 
     handleSessionUpdate = (update) => {
