@@ -3,7 +3,7 @@
 
     const getCurrentTimeSource = () => {
         let currentTime = 0;
-        if ($timerState.isRunning) {
+        if ($timerState.isRunning || !$timerState.isSessionEnded) {
             currentTime = $timerState.timeLeft;
         } else if ($timerState.session === 'FOCUS') {
             currentTime = $timerState.focusDuration;

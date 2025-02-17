@@ -1,5 +1,6 @@
 export const updates = {
     STARTED: 'STARTED',
+    RESUMED: 'RESUMED',
     PAUSED: 'PAUSED',
     STOPPED: 'STOPPED',
     TIME_UPDATE: 'TIME_UPDATE',

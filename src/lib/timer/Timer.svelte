@@ -21,7 +21,11 @@
     }
 
     function onStartClick() {
-        $connection.send({name: commands.START, arg: $timerState.timeLeft.toString()});
+        if (!$timerState.isSessionEnded) {
+            $connection.send({name: commands.RESUME});
+            return;
+        }
+        $connection.send({name: commands.START});
     }
 
     function onPauseClick() {
