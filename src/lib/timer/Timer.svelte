@@ -1,5 +1,13 @@
 <script>
-    import { PauseSolid, PlaySolid } from 'flowbite-svelte-icons';
+    import {
+        ArrowsRepeatOutline,
+        DrawSquareOutline,
+        PauseSolid,
+        PlaySolid,
+        StopOutline,
+        StopSolid,
+        UploadSolid
+    } from 'flowbite-svelte-icons';
     import { connection, shouldPlayAudio, timerState } from '$lib/stores/Stores.js';
     import { commands } from '$lib/modules/hub/models/Commands.js';
     import ClockFace from '$lib/timer/ClockFace.svelte';
@@ -7,18 +15,11 @@
 
     const FIVE_MINUTES = 300;
     const BUTTON_CLASSES = {
-        base: 'shadow-md px-6 py-5 ml-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50',
-        active: 'bg-emerald-100 hover:border-amber-200 transition active:translate-y-1',
-        running: 'transition-colors duration-500 bg-emerald-400',
-        stopped: 'transition-colors duration-500 bg-red-400'
+        base: 'shadow-md px-5 py-4 md:px-6 md:py-5 lg:px-8 lg:py-7 ml-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50',
+        active: 'bg-emerald-100 hover:border-amber-200 transition active:translate-y-1'
     };
 
     let audio = $state();
-
-    function getButtonClasses(isControlButton = false, isRunning = false) {
-        if (!isControlButton) return `${BUTTON_CLASSES.base} ${BUTTON_CLASSES.active}`;
-        return `${BUTTON_CLASSES.base} ${isRunning ? BUTTON_CLASSES.running : BUTTON_CLASSES.stopped}`;
-    }
 
     function onStartClick() {
         if (!$timerState.isSessionEnded) {
@@ -48,32 +49,45 @@
     });
 </script>
 
-<div class='flex flex-col items-center h-full'>
-    <div class='flex flex-row items-center'>
-        <ClockFace />
+<div class='flex flex-col items-center flex-grow'>
+
+    <div class='pt-24'>
+        <div class="flex text-3xl md:text-4xl lg:text-5xl font-bold text-gray-100 justify-center">
+            {#if $timerState.session === 'FOCUS'}
+                <div>Focus</div>
+            {:else}
+                <div>Break</div>
+            {/if}
+        </div>
+
+        <ClockFace/>
     </div>
 
+
     <div class='inline-flex'>
-        <button class={getButtonClasses()}
+        <button class={[BUTTON_CLASSES.base, BUTTON_CLASSES.active]}
                 onclick={() => onAdjustClick(FIVE_MINUTES)}>
             +5
         </button>
 
-        <button class={getButtonClasses(true, !$timerState.isRunning)}
-                onclick={onStartClick}>
-            <PlaySolid/>
-        </button>
+        {#if $timerState.isRunning}
+            <button class={[BUTTON_CLASSES.base, BUTTON_CLASSES.active, 'hover:bg-blue-500']} onclick={onPauseClick}>
+                <PauseSolid/>
+            </button>
+            <button class={[BUTTON_CLASSES.base, BUTTON_CLASSES.active, 'hover:bg-red-400']} onclick={onPauseClick}>
+                <ArrowsRepeatOutline/>
+            </button>
+        {:else}
+            <button class={[BUTTON_CLASSES.base, BUTTON_CLASSES.active, 'hover:bg-emerald-600']}
+                    onclick={onStartClick}>
+                <PlaySolid/>
+            </button>
+        {/if}
 
-        <button class={getButtonClasses(true, $timerState.isRunning)} onclick={onPauseClick}>
-            <PauseSolid/>
-        </button>
-
-        <button class={getButtonClasses()} onclick={() => onAdjustClick(-FIVE_MINUTES)}>
+        <button class={[BUTTON_CLASSES.base, BUTTON_CLASSES.active]} onclick={() => onAdjustClick(-FIVE_MINUTES)}>
             -5
         </button>
     </div>
 
-    <audio src={env.PUBLIC_TIMED_OUT_AUDIO}
-            bind:this={audio}
-            hidden></audio>
+    <audio src={env.PUBLIC_TIMED_OUT_AUDIO} bind:this={audio} hidden></audio>
 </div>

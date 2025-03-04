@@ -21,7 +21,7 @@
     let seconds = $derived(Math.round(getCurrentTimeSource() % 60));
 </script>
 
-<div class='text-[25vmin] m-4 tabular-nums drop-shadow-lg text-gray-100'>
+<div class='text-[25vmin] mx-4 mb-4 tabular-nums drop-shadow-lg text-gray-100'>
     {minutes < 10 ? '0' + minutes : minutes}
     :
     {seconds < 10 ? '0' + seconds : seconds}
