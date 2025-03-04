@@ -1,16 +1,16 @@
-FROM node:20-alpine AS builder
+FROM node:23-alpine AS builder
 
 WORKDIR /app
-
+# --force is a temporary solution as svelte 5 is not yet fully supported
 COPY package.json .
 COPY package-lock.json .
-RUN npm ci
+RUN npm ci --force
 COPY . .
 
 RUN npm run build
-RUN npm prune --production
+RUN npm prune --production --force
 
-FROM node:20-alpine
+FROM node:23-alpine
 WORKDIR /app
 COPY --from=builder /app/build/ build/
 COPY --from=builder /app/node_modules/ node_modules/
