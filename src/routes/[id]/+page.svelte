@@ -4,16 +4,21 @@
     import { onMount } from 'svelte';
     import { connection, hubId, isHubClosed, timerState } from '$lib/stores/Stores.js';
     import openConnection from '$lib/modules/WebSocketConnection.js';
-    import { AdjustmentsHorizontalSolid, ShareAllSolid } from 'flowbite-svelte-icons';
+    import {
+        AdjustmentsHorizontalSolid, FileCopyOutline,
+        UserAddOutline
+    } from 'flowbite-svelte-icons';
     import { goto } from '$app/navigation';
+    import { Tooltip } from 'flowbite-svelte';
+    import copy from 'copy-to-clipboard';
 
-    let { data } = $props()
-    const BUTTON_CLASS = 'shadow-md px-5 py-4 md:px-6 md:py-5 rounded-full text-gray-700 font-bold hover:bg-emerald-50 bg-emerald-100 hover:border-amber-200 transition active:translate-y-1';
+    let {data} = $props()
+    const BUTTON_CLASS = 'shadow-md px-4 py-3 md:px-6 md:py-5 rounded-full text-gray-700 font-bold hover:bg-emerald-50 bg-emerald-100 hover:border-amber-200 transition active:translate-y-1';
 
     onMount(() => {
         if ($hubId === null || $hubId === '') {
             if (data.hubId === undefined || data.hubId === null) {
-                goto('/', { replaceState: true });
+                goto('/', {replaceState: true});
                 return;
             }
             $hubId = data.hubId;
@@ -35,7 +40,7 @@
 
     $effect(() => {
         if ($isHubClosed) {
-            goto('/', { replaceState: true });
+            goto('/', {replaceState: true});
         }
     })
 </script>
@@ -44,27 +49,40 @@
     {#if $timerState.session === 'BREAK'}
         <div class="-z-10 absolute min-w-full min-h-full bg-blue-400" in:fly out:fade></div>
     {:else}
-        <div class="-z-10 absolute min-w-full min-h-full bg-green-400" in:fly out:fade></div>
+        <div class="-z-10 absolute min-w-full min-h-full bg-orange-400" in:fly out:fade></div>
     {/if}
-    <div class="flex flex-col px-6 md:px-14 xl:px-64 2xl:px-96 min-h-screen">
-        <header class="flex flex-row gap-2 pt-2 pb-4 border-b-4 justify-between">
-            <button class={BUTTON_CLASS}
-                    title="Share">
-                <ShareAllSolid />
-            </button>
+    <div class="flex flex-col min-h-screen min-w-full">
+        <header class={$timerState.session === 'FOCUS'? 'bg-orange-500' : 'bg-blue-500'}>
+            <div class="flex flex-row gap-2 pt-2 pb-4 border-b-4 px-6 md:px-14 xl:px-64 2xl:px-96">
+                <span class="flex-auto text-4xl md:text-6xl lg:text-7xl text-white font-bold self-center">Pomoteam</span>
 
-            <span class="text-4xl md:text-6xl lg:text-7xl text-white font-bold text-center self-center">Pomoteam</span>
 
-            <button class={BUTTON_CLASS}
-                    title="Settings">
-                <AdjustmentsHorizontalSolid />
-            </button>
+
+                <button class={[BUTTON_CLASS, 'flex-grow-0']}
+                        title="Settings"
+                        id="settings">
+                    <AdjustmentsHorizontalSolid/>
+                </button>
+                <Tooltip type="light" trigger='click' triggeredBy='#settings'>Soon!</Tooltip>
+            </div>
         </header>
 
-        <Timer />
+        <Timer/>
 
-        <footer class="relative mb-4 hover:inline">
+        <footer class="flex flex-row gap-2 pt-2 pb-4 border-b-4 px-6 md:px-14 xl:px-64 2xl:px-96 justify-center">
+            <button id="add-user" class={[BUTTON_CLASS]} onclick={() => {copy(window.location.href);}}>
+                <Tooltip type="light" trigger='click' triggeredBy='#add-user'>
+                    <div class="bg-gray-200 flex flex-row p-0.5">
+                       <div>
+                           {window.location.href}
+                       </div>
+                        <FileCopyOutline></FileCopyOutline>
+                    </div>
 
+                    <div>Copied!</div>
+                </Tooltip>
+                <UserAddOutline class="float-left m-0.5"></UserAddOutline>
+            </button>
         </footer>
     </div>
 </div>
