@@ -13,7 +13,7 @@
     import copy from 'copy-to-clipboard';
 
     let {data} = $props()
-    const BUTTON_CLASS = 'shadow-md px-4 py-3 md:px-6 md:py-5 rounded-full text-gray-700 font-bold hover:bg-emerald-50 bg-emerald-100 hover:border-amber-200 transition active:translate-y-1';
+    const BUTTON_CLASS = 'shadow-md px-4 py-3 md:px-6 md:py-5 rounded-full text-gray-700 font-bold hover:bg-gray-50 bg-white hover:border-amber-200 transition active:translate-y-1';
 
     onMount(() => {
         if ($hubId === null || $hubId === '') {
@@ -47,13 +47,13 @@
 
 <div>
     {#if $timerState.session === 'BREAK'}
-        <div class="-z-10 absolute min-w-full min-h-full bg-blue-400" in:fly out:fade></div>
+        <div class="-z-10 absolute min-w-full min-h-full bg-blue-300" in:fly out:fade></div>
     {:else}
-        <div class="-z-10 absolute min-w-full min-h-full bg-orange-400" in:fly out:fade></div>
+        <div class="-z-10 absolute min-w-full min-h-full bg-orange-100 bg-opacity-85" in:fly out:fade></div>
     {/if}
     <div class="flex flex-col min-h-screen min-w-full">
         <header class={$timerState.session === 'FOCUS'? 'bg-orange-500' : 'bg-blue-500'}>
-            <div class="flex flex-row gap-2 pt-2 pb-4 border-b-4 px-6 md:px-14 xl:px-64 2xl:px-96">
+            <div class="flex flex-row gap-2 pt-2 pb-4 border-b-2 px-6 md:px-14 xl:px-64 2xl:px-96">
                 <span class="flex-auto text-4xl md:text-6xl lg:text-7xl text-white font-bold self-center">Pomoteam</span>
 
 
@@ -69,7 +69,7 @@
 
         <Timer/>
 
-        <footer class="flex flex-row gap-2 pt-2 pb-4 border-b-4 px-6 md:px-14 xl:px-64 2xl:px-96 justify-center">
+        <footer class="flex flex-row gap-2 pt-2 pb-4 px-6 md:px-14 xl:px-64 2xl:px-96 justify-center">
             <button id="add-user" class={[BUTTON_CLASS]} onclick={() => {copy(window.location.href);}}>
                 <Tooltip type="light" trigger='click' triggeredBy='#add-user'>
                     <div class="bg-gray-200 flex flex-row p-0.5">

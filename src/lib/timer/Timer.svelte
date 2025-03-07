@@ -16,7 +16,7 @@
     const FIVE_MINUTES = 300;
     const BUTTON_CLASSES = {
         base: 'shadow-md px-5 py-4 md:px-6 md:py-5 lg:px-8 lg:py-7 ml-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50',
-        active: 'bg-emerald-100 hover:border-amber-200 transition active:translate-y-1'
+        active: 'bg-white hover:border-amber-200 transition active:translate-y-1'
     };
 
     let audio = $state();
@@ -52,11 +52,11 @@
 <div class='flex flex-col items-center flex-grow'>
 
     <div class='pt-24'>
-        <div class="flex text-3xl md:text-4xl lg:text-5xl font-bold text-gray-100 justify-center">
+        <div class="flex text-3xl md:text-4xl lg:text-5xl font-bold justify-center">
             {#if $timerState.session === 'FOCUS'}
-                <div>Focus</div>
+                <div class='text-red-950'>Focus</div>
             {:else}
-                <div>Break</div>
+                <div class='text-white'>Break</div>
             {/if}
         </div>
 
