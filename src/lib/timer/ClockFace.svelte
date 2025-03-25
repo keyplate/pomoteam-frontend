@@ -7,7 +7,7 @@
             currentTime = $timerState.timeLeft;
         } else if ($timerState.session === 'FOCUS') {
             currentTime = $timerState.focusDuration;
-        }else if ($timerState.session === 'BREAK') {
+        } else if ($timerState.session === 'BREAK') {
             currentTime = $timerState.breakDuration;
         }
 

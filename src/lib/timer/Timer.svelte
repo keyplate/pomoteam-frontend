@@ -1,12 +1,8 @@
 <script>
     import {
         ArrowsRepeatOutline,
-        DrawSquareOutline,
         PauseSolid,
         PlaySolid,
-        StopOutline,
-        StopSolid,
-        UploadSolid
     } from 'flowbite-svelte-icons';
     import { connection, shouldPlayAudio, timerState } from '$lib/stores/Stores.js';
     import { commands } from '$lib/modules/hub/models/Commands.js';
