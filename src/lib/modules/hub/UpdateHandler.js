@@ -31,6 +31,7 @@ export class UpdateHandler {
         const focusDuration = Number.parseInt(update.args.focusDuration);
         const isSessionEnded = this.parseBool(update.args.isSessionEnded);
         const isRunning = this.parseBool(update.args.isRunning);
+        const sessionType = update.args.sessionType;
 
         timerState.update(state => {
             return {
@@ -40,7 +41,7 @@ export class UpdateHandler {
                 focusDuration: focusDuration,
                 isRunning: isRunning,
                 isSessionEnded: isSessionEnded,
-                state: update.args.sessionType,
+                session: sessionType,
             }
         });
     }
