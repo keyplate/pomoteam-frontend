@@ -1,32 +1,21 @@
 <script>
-    import { List, Tooltip } from 'flowbite-svelte';
     import { createHub } from '$lib/modules/hub/Hub.js';
     import { goto } from '$app/navigation';
     import copy from 'copy-to-clipboard';
     import { hubId } from '$lib/stores/Stores.js';
     import {
-        ArrowRightOutline,
         EnvelopeOutline,
         GithubSolid,
     } from 'flowbite-svelte-icons';
 
-    let disableCreate = $state(false);
-
     async function onCreateClick() {
         try {
-            disableCreate = true;
             $hubId = await createHub('');
+            await goto(`/${$hubId}`, {replaceState: true});
+            copy(window.location.href);
         } catch (error) {
             console.error('Failed to create hub:', error);
-            disableCreate = false;
         }
-    }
-
-    function onCopyClick() {
-        setTimeout(() => {
-            copy(window.location.href);
-            goto(`/${$hubId}`, {replaceState: true});
-        }, 1000);
     }
 
 </script>
@@ -51,23 +40,10 @@
                 <span class="mr-0.5">To start</span>
                 <button onclick={onCreateClick}
                         class='bg-blue-700 px-1 py-0.5 rounded-md text-white border-2 border-blue-800 hover:border-amber-200'>
-                    <span class="font-bold">generate a link</span>
+                    <span class="font-bold">Create a room</span>
                 </button>
-                <span>and share it with you peers</span>
             </div>
-            {#if disableCreate}
-                <div class='w-full ml-10 flex flex-row'>
-                    <div class='flex flex-row items-center'>
-                        <ArrowRightOutline/>
-                        <div class='border-0 underline underline-offset-8 shadow-sm text-center py-1 px-2'>{$hubId}</div>
-                    </div>
-                    <button id='copy-button' onclick={onCopyClick}
-                            class='bg-blue-700 px-1 py-0.5 ml-2 rounded-md text-gray-300 font-bold border-2 border-blue-800 hover:border-amber-200'>
-                        copy
-                    </button>
-                    <Tooltip trigger='click' triggeredBy='#copy-button'>Copied!</Tooltip>
-                </div>
-            {/if}
+            <div class="mt-2 ml-2"> * The link will be copied to your clipboard, share it with your buddies!</div>
         </div>
 
         <div class='bg-yellow-100 m-16 mt-24 p-5 rounded-xl rotate-3 shadow-lg'>
@@ -91,7 +67,8 @@
             <p>
                 Focusing is easier when you're not alone.
                 Pomotime leverages the
-                <a class="font-bold text-blue-700 underline" href="https://en.wikipedia.org/wiki/Body_doubling">body doubling</a> technique where the presence of others helps maintain accountability and motivation.
+                <a class="font-bold text-blue-700 underline" href="https://en.wikipedia.org/wiki/Body_doubling">body
+                    doubling</a> technique where the presence of others helps maintain accountability and motivation.
             </p>
         </div>
 
