@@ -21,7 +21,7 @@
     let seconds = $derived(Math.round(getCurrentTimeSource() % 60));
 </script>
 
-<div class={['text-[25vmin] mx-4 mb-4 tabular-nums drop-shadow-lg', $timerState.session === 'FOCUS' ? 'text-red-950' : 'text-white']}>
+<div class={['text-[25vmin] mx-4 mb-4 tabular-nums drop-shadow-lg', $timerState.session === 'FOCUS' ? 'text-black' : 'text-white']}>
     {minutes < 10 ? '0' + minutes : minutes}
     :
     {seconds < 10 ? '0' + seconds : seconds}
