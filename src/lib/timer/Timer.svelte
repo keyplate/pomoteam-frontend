@@ -11,7 +11,7 @@
 
     const FIVE_MINUTES = 300;
     const BUTTON_CLASSES = {
-        base: 'shadow-md px-5 py-4 md:px-6 md:py-5 lg:px-8 lg:py-7 ml-2 rounded-full text-gray-700 font-bold hover:bg-emerald-50',
+        base: 'shadow-md px-5 py-4 md:px-6 md:py-5 lg:px-8 lg:py-7 m-1 rounded-full text-gray-700 font-bold hover:bg-emerald-50',
         active: 'bg-white hover:border-amber-200 transition active:translate-y-1'
     };
 
