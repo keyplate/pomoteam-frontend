@@ -27,8 +27,8 @@
         </div>
     </header>
 
-    <div class='flex-grow gap-2 pt-2 pb-4 px-6 md:px-14 xl:px-64 2xl:px-[25vw]'>
-        <div class='bg-blue-200 m-16 p-2.5 rounded-xl -rotate-3 shadow-lg'>
+    <div class='flex-grow gap-2 pt-2 pb-4 md:px-14 xl:px-64 2xl:px-[25vw]'>
+        <div class='bg-blue-200 m-16 mx-8 md:mx-16 p-2.5 rounded-xl -rotate-3 shadow-lg'>
             <p class='text-3xl mb-8 text-center'>
                 Welcome to <span class="font-bold">Pomoteam:</span>
             </p>
@@ -46,7 +46,7 @@
             <div class="mt-2 ml-2"> * The link will be copied to your clipboard, share it with your buddies!</div>
         </div>
 
-        <div class='bg-yellow-100 m-16 mt-24 p-5 rounded-xl rotate-3 shadow-lg'>
+        <div class='bg-yellow-100 m-16 mx-8 md:mx-16 mt-24 p-5 rounded-xl rotate-3 shadow-lg'>
             <p class='text-3xl mb-8 text-center'>
                 <span class="font-bold">How</span> it works?
             </p>
@@ -60,7 +60,7 @@
 
         </div>
 
-        <div class='bg-emerald-200 m-16 p-2.5 rounded-xl -rotate-2 shadow-lg text-xl'>
+        <div class='bg-emerald-200 m-16 mx-8 md:mx-16 p-2.5 rounded-xl -rotate-2 shadow-lg text-xl'>
             <p class='text-3xl mb-8 text-center'>
                 Why <span class="font-bold font-sans">collaborative</span>?
             </p>
