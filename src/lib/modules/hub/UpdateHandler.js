@@ -14,6 +14,7 @@ export class UpdateHandler {
         this.handlers.set(updates.TIME_OUT, this.handleTimeOut);
         this.handlers.set(updates.CLOSED, this.handleRoomClose);
         this.handlers.set(updates.RESUMED, this.handleResume);
+        this.handlers.set(updates.TIMER_RESET, this.handleReset);
     }
 
     handle = (update) => {
@@ -92,6 +93,15 @@ export class UpdateHandler {
         timerState.update(state => ({
             ...state, isRunning: isRunning
         }));
+    }
+
+    handleReset = (update) => {
+        const isSessionEnded = this.parseBool(update.args.isSessionEnded);
+        const isRunning = this.parseBool(update.args.isRunning);
+
+        timerState.update(state => ({
+            ...state, isRunning: isRunning, isSessionEnded: isSessionEnded,
+        }))
     }
 
     handleTimeOut = (update) => {

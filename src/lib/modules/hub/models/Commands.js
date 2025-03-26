@@ -4,5 +4,5 @@ export const commands = {
     STOP: 'STOP',
     PAUSE: 'PAUSE',
     ADJUST: 'ADJUST',
-    RESTART: 'RESTART',
+    RESET: 'RESET',
 }

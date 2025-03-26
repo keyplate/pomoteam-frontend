@@ -29,6 +29,10 @@
         $connection.send({name: commands.PAUSE});
     }
 
+    function onResetClick() {
+        $connection.send({name: commands.RESET});
+    }
+
     /**
      * @param {number} duration
      */
@@ -70,7 +74,7 @@
             <button class={[BUTTON_CLASSES.base, BUTTON_CLASSES.active, 'hover:bg-blue-500']} onclick={onPauseClick}>
                 <PauseSolid/>
             </button>
-            <button class={[BUTTON_CLASSES.base, BUTTON_CLASSES.active, 'hover:bg-red-400']} onclick={onPauseClick}>
+            <button class={[BUTTON_CLASSES.base, BUTTON_CLASSES.active, 'hover:bg-red-400']} onclick={onResetClick}>
                 <ArrowsRepeatOutline/>
             </button>
         {:else}

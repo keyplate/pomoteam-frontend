@@ -9,4 +9,5 @@ export const updates = {
     CLOSED: 'ROOM_CLOSED',
     STATE: 'STATE',
     SESSION_UPDATE: 'SESSION_UPDATE',
+    TIMER_RESET: 'TIMER_RESET',
 }
