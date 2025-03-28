@@ -2,7 +2,7 @@ import { UpdateHandler } from './hub/UpdateHandler.js';
 import { env } from '$env/dynamic/public';
 import { isHubClosed } from '$lib/stores/Stores.js';
 
-class WebSocketConnection {
+export class WebSocketConnection {
     constructor(hubId) {
         this.hubId = hubId;
         this.ws = null;

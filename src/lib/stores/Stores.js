@@ -2,6 +2,13 @@ import { writable } from 'svelte/store';
 
 export const hubId = writable('');
 
+export const hubState = writable({
+    users: [],
+    username: '',
+});
+
+export const isHubClosed = writable(false);
+
 export const timerState = writable({
     timeLeft: 0,
     session: 'FOCUS',
@@ -14,5 +21,3 @@ export const timerState = writable({
 export const shouldPlayAudio = writable(false);
 
 export const connection = writable();
-
-export const isHubClosed = writable(false);

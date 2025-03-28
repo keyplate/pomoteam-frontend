@@ -10,4 +10,5 @@ export const updates = {
     STATE: 'STATE',
     SESSION_UPDATE: 'SESSION_UPDATE',
     TIMER_RESET: 'TIMER_RESET',
+    USERS: 'USERS',
 }

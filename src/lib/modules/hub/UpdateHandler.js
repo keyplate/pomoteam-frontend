@@ -1,5 +1,5 @@
 import { updates } from '$lib/modules/hub/models/Updates.js';
-import { isHubClosed, shouldPlayAudio, timerState } from '$lib/stores/Stores.js';
+import { hubState, isHubClosed, shouldPlayAudio, timerState } from '$lib/stores/Stores.js';
 
 export class UpdateHandler {
     handlers = new Map();
@@ -15,6 +15,7 @@ export class UpdateHandler {
         this.handlers.set(updates.CLOSED, this.handleRoomClose);
         this.handlers.set(updates.RESUMED, this.handleResume);
         this.handlers.set(updates.TIMER_RESET, this.handleReset);
+        this.handlers.set(updates.USERS, this.handleUsers)
     }
 
     handle = (update) => {
@@ -109,7 +110,7 @@ export class UpdateHandler {
         const isRunning = this.parseBool(update.args.isRunning);
 
         timerState.update(state => ({
-            ...state, isRunning: isRunning, isSessionEnded: isSessionEnded,
+            ...state, isRunning: isRunning, isSessionEnded: isSessionEnded
         }));
         shouldPlayAudio.set(true);
     }
@@ -118,6 +119,12 @@ export class UpdateHandler {
         timerState.update(state => ({
             ...state, session: update.args.sessionType
         }));
+    }
+
+    handleUsers = (update) => {
+        hubState.update(state => ({
+            ...state, update: update.args.users
+        }))
     }
 
     handleRoomClose = () => {

@@ -5,4 +5,5 @@ export const commands = {
     PAUSE: 'PAUSE',
     ADJUST: 'ADJUST',
     RESET: 'RESET',
+    SET_USER_NAME: 'SET_USER_NAME',
 }
