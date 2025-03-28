@@ -3,7 +3,7 @@
     import { fly, fade } from 'svelte/transition';
     import { onMount } from 'svelte';
     import { timerState } from '$lib/timer/stores/Stores.js';
-    import { hubId, connection, isHubClosed, hubState } from '$lib/hub/stores/Stores.js';
+    import { connection, isHubClosed, hubState } from '$lib/hub/stores/Stores.js';
     import openConnection from '$lib/hub/WebSocketConnection.js';
     import {
         AdjustmentsHorizontalSolid, FileCopyOutline,
@@ -38,16 +38,14 @@
     }
 
     onMount(() => {
-        if ($hubId === null || $hubId === '') {
-            if (data.hubId === undefined || data.hubId === null) {
-                goto('/', {replaceState: true});
-                return;
-            }
-            $hubId = data.hubId;
+        const hubId = data.hubId;
+        if (hubId === undefined || hubId === null) {
+            goto('/', {replaceState: true});
+            return;
         }
 
         try {
-            $connection = openConnection($hubId);
+            $connection = openConnection(hubId);
             cmdHandler = new CommandHandler($connection);
         } catch (error) {
             console.error('Failed to establish connection:', error);

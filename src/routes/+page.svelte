@@ -2,7 +2,6 @@
     import { createHub } from '$lib/hub/Hub.js';
     import { goto } from '$app/navigation';
     import copy from 'copy-to-clipboard';
-    import { hubId } from '$lib/hub/stores/Stores.js';
     import {
         EnvelopeOutline,
         GithubSolid,
@@ -10,8 +9,8 @@
 
     async function onCreateClick() {
         try {
-            $hubId = await createHub('');
-            await goto(`/${$hubId}`, {replaceState: true});
+            const hubId = await createHub('');
+            await goto(`/${hubId}`, {replaceState: true});
             copy(window.location.href);
         } catch (error) {
             console.error('Failed to create hub:', error);
