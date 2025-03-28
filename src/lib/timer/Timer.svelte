@@ -9,6 +9,7 @@
     import { commands } from '$lib/hub/models/Commands.js';
     import ClockFace from '$lib/timer/ClockFace.svelte';
     import { env } from '$env/dynamic/public';
+    import { CommandHandler} from '$lib/hub/CommandHandler.js';
 
     const FIVE_MINUTES = 300;
     const BUTTON_CLASSES = {
@@ -17,28 +18,26 @@
     };
 
     let audio = $state();
+    let { cmdHandler } = $props()
 
     function onStartClick() {
         if (!$timerState.isSessionEnded) {
-            $connection.send({name: commands.RESUME});
+            cmdHandler.resume()
             return;
         }
-        $connection.send({name: commands.START});
+        cmdHandler.start();
     }
 
     function onPauseClick() {
-        $connection.send({name: commands.PAUSE});
+        cmdHandler.pause();
     }
 
     function onResetClick() {
-        $connection.send({name: commands.RESET});
+        cmdHandler.reset();
     }
 
-    /**
-     * @param {number} duration
-     */
     function onAdjustClick(duration) {
-        $connection.send({name: commands.ADJUST, args: duration.toString()});
+        cmdHandler.adjust(duration);
     }
 
     $effect(() => {
