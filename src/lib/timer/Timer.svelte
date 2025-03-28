@@ -5,11 +5,8 @@
         PlaySolid,
     } from 'flowbite-svelte-icons';
     import { shouldPlayAudio, timerState } from '$lib/timer/stores/Stores.js';
-    import { connection } from '$lib/hub/stores/Stores.js';
-    import { commands } from '$lib/hub/models/Commands.js';
     import ClockFace from '$lib/timer/ClockFace.svelte';
     import { env } from '$env/dynamic/public';
-    import { CommandHandler} from '$lib/hub/CommandHandler.js';
 
     const FIVE_MINUTES = 300;
     const BUTTON_CLASSES = {

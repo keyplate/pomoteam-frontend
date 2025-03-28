@@ -19,7 +19,7 @@
     /**
      * @type {CommandHandler}
      * */
-    let cmdHandler;
+    let cmdHandler = $state();
     let {data} = $props()
     let isModalOpen = $state(true);
     /**
@@ -95,7 +95,7 @@
             </div>
         </header>
 
-        <Timer/>
+        <Timer cmdHandler={cmdHandler}/>
 
         <footer class="flex flex-row gap-2 pt-2 pb-4 px-6 md:px-14 xl:px-64 2xl:px-96 justify-center">
             <button id="add-user" class={[BUTTON_CLASS]} onclick={() => {copy(window.location.href);}}>
