@@ -1,4 +1,4 @@
-import { commands } from '$lib/modules/hub/models/Commands.js';
+import { commands } from '$lib/hub/models/Commands.js';
 
 export class CommandHandler {
     /**

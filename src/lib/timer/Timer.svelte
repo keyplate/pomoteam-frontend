@@ -4,8 +4,9 @@
         PauseSolid,
         PlaySolid,
     } from 'flowbite-svelte-icons';
-    import { connection, shouldPlayAudio, timerState } from '$lib/stores/Stores.js';
-    import { commands } from '$lib/modules/hub/models/Commands.js';
+    import { shouldPlayAudio, timerState } from '$lib/timer/stores/Stores.js';
+    import { connection } from '$lib/hub/stores/Stores.js';
+    import { commands } from '$lib/hub/models/Commands.js';
     import ClockFace from '$lib/timer/ClockFace.svelte';
     import { env } from '$env/dynamic/public';
 

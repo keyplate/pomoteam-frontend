@@ -2,8 +2,9 @@
     import Timer from '$lib/timer/Timer.svelte';
     import { fly, fade } from 'svelte/transition';
     import { onMount } from 'svelte';
-    import { connection, hubId, isHubClosed, timerState, hubState } from '$lib/stores/Stores.js';
-    import openConnection from '$lib/modules/WebSocketConnection.js';
+    import { timerState } from '$lib/timer/stores/Stores.js';
+    import { hubId, connection, isHubClosed, hubState } from '$lib/hub/stores/Stores.js';
+    import openConnection from '$lib/hub/WebSocketConnection.js';
     import {
         AdjustmentsHorizontalSolid, FileCopyOutline,
         UserAddOutline
@@ -11,7 +12,7 @@
     import { goto } from '$app/navigation';
     import { Tooltip, Modal } from 'flowbite-svelte';
     import copy from 'copy-to-clipboard';
-    import { CommandHandler } from '$lib/modules/hub/CommandHandler.js';
+    import { CommandHandler } from '$lib/hub/CommandHandler.js';
 
     const BUTTON_CLASS = 'shadow-md px-4 py-3 md:px-6 md:py-5 rounded-full text-gray-700 font-bold hover:bg-gray-50 bg-white hover:border-amber-200 transition active:translate-y-1';
 

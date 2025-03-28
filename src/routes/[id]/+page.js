@@ -1,4 +1,4 @@
-import { checkHubExists } from '$lib/modules/hub/Hub.js';
+import { checkHubExists } from '$lib/hub/Hub.js';
 import { goto } from '$app/navigation';
 
 /** @type {import('./$types').PageLoad} */

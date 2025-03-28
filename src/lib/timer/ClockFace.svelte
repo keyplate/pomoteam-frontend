@@ -1,5 +1,5 @@
 <script>
-    import { timerState } from '$lib/stores/Stores.js';
+    import { timerState } from '$lib/timer/stores/Stores.js';
 
     const getCurrentTimeSource = () => {
         let currentTime = 0;

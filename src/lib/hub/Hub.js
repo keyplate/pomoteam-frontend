@@ -1,6 +1,6 @@
-import { HubOperationError } from '$lib/errors/hubError.js';
-import { ERROR_MESSAGES } from '$lib/errors/hubError.js';
-import { ERROR_TYPES } from '$lib/errors/hubError.js';
+import { HubOperationError } from '$lib/hub/errors/hubError.js';
+import { ERROR_MESSAGES } from '$lib/hub/errors/hubError.js';
+import { ERROR_TYPES } from '$lib/hub/errors/hubError.js';
 import { env } from '$env/dynamic/public';
 
 const HUB_ENDPOINT = env.PUBLIC_HUB_ENDPOINT;

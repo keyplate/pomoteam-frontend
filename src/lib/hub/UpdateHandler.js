@@ -1,6 +1,6 @@
-import { updates } from '$lib/modules/hub/models/Updates.js';
-import { hubState, isHubClosed, shouldPlayAudio, timerState } from '$lib/stores/Stores.js';
-
+import { updates } from '$lib/hub/models/Updates.js';
+import { shouldPlayAudio, timerState } from '$lib/timer/stores/Stores.js';
+import { hubState, isHubClosed } from '$lib/hub/stores/Stores.js';
 export class UpdateHandler {
     handlers = new Map();
 

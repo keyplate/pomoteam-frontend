@@ -1,8 +1,8 @@
 <script>
-    import { createHub } from '$lib/modules/hub/Hub.js';
+    import { createHub } from '$lib/hub/Hub.js';
     import { goto } from '$app/navigation';
     import copy from 'copy-to-clipboard';
-    import { hubId } from '$lib/stores/Stores.js';
+    import { hubId } from '$lib/hub/stores/Stores.js';
     import {
         EnvelopeOutline,
         GithubSolid,

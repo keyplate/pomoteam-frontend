@@ -1,6 +1,6 @@
-import { UpdateHandler } from './hub/UpdateHandler.js';
+import { UpdateHandler } from './UpdateHandler.js';
 import { env } from '$env/dynamic/public';
-import { isHubClosed } from '$lib/stores/Stores.js';
+import { isHubClosed } from '$lib/hub/stores/Stores.js';
 
 export class WebSocketConnection {
     constructor(hubId) {
