@@ -5,14 +5,11 @@
     import { timerState } from '$lib/timer/stores/Stores.js';
     import { isHubClosed, hubState } from '$lib/hub/stores/Stores.js';
     import openConnection from '$lib/hub/WebSocketConnection.js';
-    import {
-        AdjustmentsHorizontalSolid, FileCopyOutline,
-        UserAddOutline
-    } from 'flowbite-svelte-icons';
+    import { AdjustmentsHorizontalSolid } from 'flowbite-svelte-icons';
     import { goto } from '$app/navigation';
     import { Tooltip, Modal } from 'flowbite-svelte';
-    import copy from 'copy-to-clipboard';
     import { CommandHandler } from '$lib/hub/CommandHandler.js';
+    import UsersPanel from '$lib/users/UsersPanel.svelte';
 
     const BUTTON_CLASS = 'shadow-md px-4 py-3 md:px-6 md:py-5 rounded-full text-gray-700 font-bold hover:bg-gray-50 bg-white hover:border-amber-200 transition active:translate-y-1';
 
@@ -98,20 +95,8 @@
 
         <Timer cmdHandler={cmdHandler}/>
 
-        <footer class="flex flex-row gap-2 pt-2 pb-4 px-6 md:px-14 xl:px-64 2xl:px-96 justify-center">
-            <button id="add-user" class={[BUTTON_CLASS]} onclick={() => {copy(window.location.href);}}>
-                <Tooltip type="light" trigger='click' triggeredBy='#add-user'>
-                    <div class="bg-gray-200 flex flex-row p-0.5">
-                       <div>
-                           {window.location.href}
-                       </div>
-                        <FileCopyOutline></FileCopyOutline>
-                    </div>
-
-                    <div>Copied!</div>
-                </Tooltip>
-                <UserAddOutline class="float-left m-0.5"></UserAddOutline>
-            </button>
+        <footer class="pt-2 pb-4 px-6 md:px-14 xl:px-64 2xl:px-96">
+            <UsersPanel />
         </footer>
     </div>
 </div>
