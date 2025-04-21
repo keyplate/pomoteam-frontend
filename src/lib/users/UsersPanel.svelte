@@ -4,7 +4,11 @@
     import { Popover, Tooltip } from 'flowbite-svelte';
     import { hubState } from '$lib/hub/stores/Stores.js';
 
-    const { users, username } = $hubState;
+    /**
+     * @var users {Array.<User>}
+     * @var currentUser {User}
+     */
+    const users = $derived($hubState.users)
 
     /**
      * @arg name {string}
@@ -17,16 +21,18 @@
 
 <div class="flex flex-row justify-center items-center gap-1 relative">
     <div class="flex relative gap-1">
-        {#each users as user, index}
-            <div id={toAbbreviation(user) + index}
-                 class="shadow-md px-3 py-2 md:px-[1.15rem] md:py-4 rounded-full text-black font-bold font-mono bg-white -mr-4 border-[1px] border-black border-dashed">
-                {toAbbreviation(user)}
-            </div>
-            <Popover class="text-sm font-light"
-                     triggeredBy={'#' + toAbbreviation(user) + index}
-                     trigger="hover">
-                {user}
-            </Popover>
+        {#each users as user, i}
+            {#if user.name !== null && user.name.length > 0}
+                <div id={'a' + i}
+                     class="shadow-md px-3 py-2 md:px-[1.15rem] md:py-4 rounded-full text-black font-bold font-mono bg-white -mr-4 border-[1px] border-black border-dashed">
+                    {toAbbreviation(user.name)}
+                </div>
+                <Popover class="text-sm font-light"
+                         triggeredBy={'#a' + i}
+                         trigger="hover">
+                    {user.name}
+                </Popover>
+            {/if}
         {/each}
     </div>
 

@@ -1,8 +1,9 @@
 import { writable } from 'svelte/store';
+import { User } from '$lib/users/models/User.js';
 
 export const hubState = writable({
-    users: ['Kyrylo Lapchenko', 'Martin Luther', 'Jane Aan Zee', ],
-    username: 'John Lennon',
+    users: User[null],
+    currentUser: new User('', ''),
 });
 
 export const isHubClosed = writable(false);

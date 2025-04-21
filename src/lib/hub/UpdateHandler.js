@@ -1,6 +1,7 @@
 import { updates } from '$lib/hub/models/Updates.js';
 import { shouldPlayAudio, timerState } from '$lib/timer/stores/Stores.js';
 import { hubState, isHubClosed } from '$lib/hub/stores/Stores.js';
+import { User } from '$lib/users/models/User.js';
 export class UpdateHandler {
     handlers = new Map();
 
@@ -15,7 +16,9 @@ export class UpdateHandler {
         this.handlers.set(updates.CLOSED, this.handleRoomClose);
         this.handlers.set(updates.RESUMED, this.handleResume);
         this.handlers.set(updates.TIMER_RESET, this.handleReset);
-        this.handlers.set(updates.USERS, this.handleUsers)
+        this.handlers.set(updates.USERS, this.handleUsers);
+        this.handlers.set(updates.USER_NAME, this.handleUsername);
+        this.handlers.set(updates.USER_ID, this.handleUserId);
     }
 
     handle = (update) => {
@@ -28,11 +31,11 @@ export class UpdateHandler {
     }
 
     handleState = (update) => {
-        const timeLeft = Number.parseInt(update.args.timeLeft);
-        const breakDuration = Number.parseInt(update.args.breakDuration);
-        const focusDuration = Number.parseInt(update.args.focusDuration);
-        const isSessionEnded = this.parseBool(update.args.isSessionEnded);
-        const isRunning = this.parseBool(update.args.isRunning);
+        const timeLeft = update.args.timeLeft;
+        const breakDuration = update.args.breakDuration;
+        const focusDuration = update.args.focusDuration;
+        const isSessionEnded = update.args.isSessionEnded;
+        const isRunning = update.args.isRunning;
         const sessionType = update.args.sessionType;
 
         timerState.update(state => {
@@ -49,27 +52,21 @@ export class UpdateHandler {
     }
 
     handleStart = (update) => {
-        const isSessionEnded = this.parseBool(update.args.isSessionEnded);
-        const isRunning = this.parseBool(update.args.isRunning);
-        const timeLeft = Number.parseInt(update.args.timeLeft);
+        const isSessionEnded = update.args.isSessionEnded;
+        const isRunning = update.args.isRunning;
+        const timeLeft = update.args.timeLeft;
 
-        timerState.update(state => ({
-            ...state, isRunning: isRunning, isSessionEnded: isSessionEnded, timeLeft: timeLeft
-        }));
+        timerState.update(state => ({...state, isRunning: isRunning, isSessionEnded: isSessionEnded, timeLeft: timeLeft}));
     }
 
     handleResume = (update) => {
-        timerState.update(state => ({
-            ...state, isRunning: this.parseBool(update.args.isRunning)
-        }));
+        timerState.update(state => ({...state, isRunning: update.args.isRunning}));
     }
 
     handleTimeUpdate = (update) => {
-        const timeLeft = Number.parseInt(update.args.timeLeft);
+        const timeLeft = update.args.timeLeft;
 
-        timerState.update(state => ({
-            ...state, timeLeft: timeLeft
-        }));
+        timerState.update(state => ({...state, timeLeft: timeLeft}));
     }
 
     handleAdjust = (update) => {
@@ -78,60 +75,61 @@ export class UpdateHandler {
                 return state;
             }
 
-            const timeLeft = Number.parseInt(update.args.timeLeft);
-            const breakDuration = Number.parseInt(update.args.breakDuration);
-            const focusDuration = Number.parseInt(update.args.focusDuration);
+            const timeLeft = update.args.timeLeft;
+            const breakDuration = update.args.breakDuration;
+            const focusDuration = update.args.focusDuration;
 
-            return {
-                ...state, timeLeft: timeLeft, focusDuration: focusDuration, breakDuration: breakDuration
-            };
+            return {...state, timeLeft: timeLeft, focusDuration: focusDuration, breakDuration: breakDuration};
         })
     }
 
     handlePause = (update) => {
-        const isRunning = this.parseBool(update.args.isRunning);
+        const isRunning = update.args.isRunning;
 
-        timerState.update(state => ({
-            ...state, isRunning: isRunning
-        }));
+        timerState.update(state => ({...state, isRunning: isRunning}));
     }
 
     handleReset = (update) => {
-        const isSessionEnded = this.parseBool(update.args.isSessionEnded);
-        const isRunning = this.parseBool(update.args.isRunning);
+        const isSessionEnded = update.args.isSessionEnded;
+        const isRunning = update.args.isRunning;
 
-        timerState.update(state => ({
-            ...state, isRunning: isRunning, isSessionEnded: isSessionEnded,
-        }))
+        timerState.update(state => ({...state, isRunning: isRunning, isSessionEnded: isSessionEnded}))
     }
 
     handleTimeOut = (update) => {
-        const isSessionEnded = this.parseBool(update.args.isSessionEnded);
-        const isRunning = this.parseBool(update.args.isRunning);
+        const isSessionEnded = update.args.isSessionEnded;
+        const isRunning = update.args.isRunning;
 
-        timerState.update(state => ({
-            ...state, isRunning: isRunning, isSessionEnded: isSessionEnded
-        }));
+        timerState.update(state => ({...state, isRunning: isRunning, isSessionEnded: isSessionEnded}));
         shouldPlayAudio.set(true);
     }
 
     handleSessionUpdate = (update) => {
-        timerState.update(state => ({
-            ...state, session: update.args.sessionType
-        }));
+        timerState.update(state => ({...state, session: update.args.sessionType}));
+    }
+
+    handleUserId = (update) => {
+        hubState.update(state => ({
+            ...state, currentUser: new User(update.args.id),
+        }))
     }
 
     handleUsers = (update) => {
-        hubState.update(state => ({
-            ...state, update: update.args.users
-        }))
+        hubState.update(state => {
+            //Current user should not be in the user List
+            const users = update.args.users.filter(
+                (user) => user.id !== state.currentUser.id
+            );
+            //Current user may have been updated
+            const newCurrentUser = update.args.users.find(
+                (user) => user.id === state.currentUser.id
+            );
+
+            return {...state, users: users, currentUser: newCurrentUser};
+        })
     }
 
     handleRoomClose = () => {
         isHubClosed.set(true);
-    }
-
-    parseBool = (jsonValue) => {
-        return jsonValue === 'true';
     }
 }

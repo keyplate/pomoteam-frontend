@@ -17,35 +17,35 @@ export class CommandHandler {
      * @param name {string}
      **/
     setUserName(name) {
-        this.connection.send({name: commands.SET_USER_NAME, args: name});
+        this.connection.send({type: "HUB", name: commands.SET_USER_NAME, args: {name: name}});
     }
 
     /**
      * @description - start the timer.
      **/
     start() {
-        this.connection.send({name: commands.START})
+        this.connection.send({type: "TIMER", name: commands.START})
     }
 
     /**
      * @description - resume the timer.
      **/
     resume() {
-        this.connection.send({name: commands.RESUME})
+        this.connection.send({type: "TIMER", name: commands.RESUME})
     }
 
     /**
      * @description - pause the timer.
      **/
     pause() {
-        this.connection.send({name: commands.PAUSE})
+        this.connection.send({type: "TIMER", name: commands.PAUSE})
     }
 
     /**
      * @description - stops the session and resets time to current session duration.
      * */
     reset() {
-        this.connection.send({name: commands.RESET})
+        this.connection.send({type: "TIMER", name: commands.RESET})
     }
 
     /**
@@ -53,6 +53,6 @@ export class CommandHandler {
      * @arg duration {number} - Adjustment amount in seconds.
      * */
     adjust(duration) {
-        this.connection.send({name: commands.ADJUST, args: duration.toString()})
+        this.connection.send({type: "TIMER", name: commands.ADJUST, args: {duration: duration.toString()}});
     }
 }

@@ -11,4 +11,6 @@ export const updates = {
     SESSION_UPDATE: 'SESSION_UPDATE',
     TIMER_RESET: 'TIMER_RESET',
     USERS: 'USERS',
+    USER_NAME: 'USER_NAME',
+    USER_ID: 'USER_ID',
 }
