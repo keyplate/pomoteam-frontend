@@ -7,6 +7,7 @@ export class WebSocketConnection {
         this.hubId = hubId;
         this.ws = null;
         this.updateHandler = new UpdateHandler();
+        this.queue = []
 
         // Connection settings
         this.connectionTimeout = 600000;
@@ -50,6 +51,7 @@ export class WebSocketConnection {
         console.log('WebSocket connected');
         clearTimeout(this.timeoutId);
         this.reconnectAttempts = 0;
+        this.queue.forEach((command) => {this.send(command)});
     }
 
     handleMessage(event) {
@@ -128,6 +130,14 @@ export class WebSocketConnection {
             console.error('Error sending message:', error);
             throw error;
         }
+    }
+
+    push(command) {
+        if (!this.isConnected()) {
+            this.queue.push(command);
+            return
+        }
+        this.send(command);
     }
 }
 

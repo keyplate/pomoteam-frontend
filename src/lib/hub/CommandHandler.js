@@ -17,7 +17,7 @@ export class CommandHandler {
      * @param name {string}
      **/
     setUserName(name) {
-        this.connection.send({type: "HUB", name: commands.SET_USER_NAME, args: {name: name}});
+        this.connection.push({type: "HUB", name: commands.SET_USER_NAME, args: {name: name}});
     }
 
     /**

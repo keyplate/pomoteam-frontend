@@ -2,6 +2,7 @@ import { updates } from '$lib/hub/models/Updates.js';
 import { shouldPlayAudio, timerState } from '$lib/timer/stores/Stores.js';
 import { hubState, isHubClosed } from '$lib/hub/stores/Stores.js';
 import { User } from '$lib/users/models/User.js';
+import { saveUsername } from '$lib/users/UserService.js';
 export class UpdateHandler {
     handlers = new Map();
 
@@ -124,6 +125,8 @@ export class UpdateHandler {
             const newCurrentUser = update.args.users.find(
                 (user) => user.id === state.currentUser.id
             );
+            //Save username to the localstorage
+            saveUsername(newCurrentUser.name);
 
             return {...state, users: users, currentUser: newCurrentUser};
         })

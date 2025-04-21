@@ -3,13 +3,14 @@
     import { fly, fade } from 'svelte/transition';
     import { onMount } from 'svelte';
     import { timerState } from '$lib/timer/stores/Stores.js';
-    import { isHubClosed, hubState } from '$lib/hub/stores/Stores.js';
+    import { isHubClosed } from '$lib/hub/stores/Stores.js';
     import openConnection from '$lib/hub/WebSocketConnection.js';
     import { AdjustmentsHorizontalSolid } from 'flowbite-svelte-icons';
     import { goto } from '$app/navigation';
     import { Tooltip, Modal } from 'flowbite-svelte';
     import { CommandHandler } from '$lib/hub/CommandHandler.js';
     import UsersPanel from '$lib/users/UsersPanel.svelte';
+    import { getUsername, hasStoredUsername } from '$lib/users/UserService.js';
 
     const BUTTON_CLASS = 'shadow-md px-4 py-3 md:px-6 md:py-5 rounded-full text-gray-700 font-bold hover:bg-gray-50 bg-white hover:border-amber-200 transition active:translate-y-1';
 
@@ -30,7 +31,6 @@
         }
 
         cmdHandler.setUserName(nameInput.value);
-        $hubState.username = nameInput.value;
         isModalOpen = false;
     }
 
@@ -45,6 +45,10 @@
         try {
             connection = openConnection(hubId);
             cmdHandler = new CommandHandler(connection);
+            if (hasStoredUsername()) {
+                isModalOpen = false;
+                cmdHandler.setUserName(getUsername());
+            }
         } catch (error) {
             console.error('Failed to establish connection:', error);
         }
