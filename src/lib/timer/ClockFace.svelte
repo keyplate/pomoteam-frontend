@@ -19,10 +19,24 @@
 
     let minutes = $derived(Math.floor(getCurrentTimeSource() / 60));
     let seconds = $derived(Math.round(getCurrentTimeSource() % 60));
+
+    /**
+     * @param word {string}
+     */
+    const capitalize = (word) => {
+       return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }
 </script>
 
+<svelte:head>
+    {#if $timerState.isRunning}
+        <title>
+            {capitalize($timerState.session)}
+            {minutes < 10 ? '0' + minutes : minutes} : {seconds < 10 ? '0' + seconds : seconds}
+        </title>
+    {/if}
+</svelte:head>
+
 <div class={['text-[25vmin] mx-4 mb-4 tabular-nums drop-shadow-lg', $timerState.session === 'FOCUS' ? 'text-black' : 'text-white']}>
-    {minutes < 10 ? '0' + minutes : minutes}
-    :
-    {seconds < 10 ? '0' + seconds : seconds}
+    {minutes < 10 ? '0' + minutes : minutes} : {seconds < 10 ? '0' + seconds : seconds}
 </div>

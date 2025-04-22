@@ -18,6 +18,11 @@
     }
 
 </script>
+
+<svelte:head>
+    <title>Pomoteam</title>
+</svelte:head>
+
 <div class='flex flex-col min-h-screen bg-orange-100 '>
 
     <header class={'bg-orange-500 flex-grow-0'}>

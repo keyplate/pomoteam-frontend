@@ -68,6 +68,12 @@
     })
 </script>
 
+<svelte:head>
+    {#if !$timerState.isRunning}
+        <title>Pomoteam</title>
+    {/if}
+</svelte:head>
+
 <div>
     <Modal bind:open={isModalOpen} outsideclose={false} dismissable={false}>
         <div class="flex flex-col justify-between min-h-32">
