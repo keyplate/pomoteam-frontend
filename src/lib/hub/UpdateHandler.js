@@ -3,6 +3,7 @@ import { shouldPlayAudio, timerState } from '$lib/timer/stores/Stores.js';
 import { hubState, isHubClosed } from '$lib/hub/stores/Stores.js';
 import { User } from '$lib/users/models/User.js';
 import { saveUsername } from '$lib/users/UserService.js';
+
 export class UpdateHandler {
     handlers = new Map();
 
@@ -57,7 +58,12 @@ export class UpdateHandler {
         const isRunning = update.args.isRunning;
         const timeLeft = update.args.timeLeft;
 
-        timerState.update(state => ({...state, isRunning: isRunning, isSessionEnded: isSessionEnded, timeLeft: timeLeft}));
+        timerState.update(state => ({
+            ...state,
+            isRunning: isRunning,
+            isSessionEnded: isSessionEnded,
+            timeLeft: timeLeft
+        }));
     }
 
     handleResume = (update) => {
@@ -95,6 +101,23 @@ export class UpdateHandler {
         const isRunning = update.args.isRunning;
 
         timerState.update(state => ({...state, isRunning: isRunning, isSessionEnded: isSessionEnded}))
+    }
+
+    handleSkip = (update) => {
+        const isSessionEnded = update.args.isSessionEnded;
+        const isRunning = update.args.isRunning;
+        const focusDuration = update.args.focusDuration;
+        const breakDuration = update.args.breakDuration;
+        const session = update.args.sessionType;
+
+        timerState.update(state => ({
+            ...state,
+            isSessionEnded: isSessionEnded,
+            breakDuration: breakDuration,
+            focusDuration: focusDuration,
+            session: session,
+            isRunning: isRunning,
+        }));
     }
 
     handleTimeOut = (update) => {

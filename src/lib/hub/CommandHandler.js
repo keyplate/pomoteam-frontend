@@ -55,4 +55,11 @@ export class CommandHandler {
     adjust(duration) {
         this.connection.send({type: "TIMER", name: commands.ADJUST, args: {duration: duration.toString()}});
     }
+
+    /**
+     * @description - skips session. Focus <-> Break.
+     */
+    skip() {
+        this.connection.send({type: "TIMER", name: commands.SKIP})
+    }
 }

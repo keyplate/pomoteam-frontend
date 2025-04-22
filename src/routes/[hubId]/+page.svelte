@@ -12,7 +12,7 @@
     import UsersPanel from '$lib/users/UsersPanel.svelte';
     import { getUsername, hasStoredUsername } from '$lib/users/UserService.js';
 
-    const BUTTON_CLASS = 'shadow-md px-4 py-3 md:px-6 md:py-5 rounded-full text-gray-700 font-bold hover:bg-gray-50 bg-white hover:border-amber-200 transition active:translate-y-1';
+    const BUTTON_CLASS = 'max-h-16 shadow-md px-4 py-3 md:px-6 md:py-5 rounded-full text-gray-700 font-bold hover:bg-gray-50 bg-white hover:border-amber-200 transition active:translate-y-1';
 
     /**
      * @type {CommandHandler}
@@ -78,14 +78,16 @@
                 onclick={onModalSubmit}>Submit</button>
         </div>
     </Modal>
+
     {#if $timerState.session === 'BREAK'}
         <div class="-z-10 absolute min-w-full min-h-full bg-blue-300" in:fly out:fade></div>
     {:else}
         <div class="-z-10 absolute min-w-full min-h-full bg-orange-100 bg-opacity-85" in:fly out:fade></div>
     {/if}
+
     <div class="flex flex-col min-h-screen min-w-full">
         <header class={$timerState.session === 'FOCUS'? 'bg-orange-500' : 'bg-blue-500'}>
-            <div class="flex flex-row gap-2 pt-2 pb-4 border-b-2 px-6 md:px-14 xl:px-64 2xl:px-96">
+            <div class="flex flex-row gap-2 pt-2 pb-4 border-b-2 px-6 md:px-14 xl:px-64 2xl:px-96 items-center">
                 <span class="flex-auto text-4xl md:text-6xl lg:text-7xl text-white font-bold self-center">Pomoteam</span>
 
                 <button class={[BUTTON_CLASS, 'flex-grow-0']}

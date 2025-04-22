@@ -6,4 +6,5 @@ export const commands = {
     ADJUST: 'ADJUST',
     RESET: 'RESET',
     SET_USER_NAME: 'SET_USER_NAME',
+    SKIP: 'SKIP',
 }
